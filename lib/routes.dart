@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'host_list/ui/host_list.dart';
 import 'splash_page.dart';
 import 'util/custom_route.dart';
 import 'util/global.dart';
@@ -88,7 +88,8 @@ class Routes {
   }
 
   static Future pushHomePage(BuildContext context) async {
-    return push(context, HomePage(), homeRoute, replace: true, fadeIn: true);
+    return push(context, HostListPage(), homeRoute,
+        replace: true, fadeIn: true);
   }
 
   static void backHome() {
