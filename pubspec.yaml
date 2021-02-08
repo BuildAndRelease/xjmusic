@@ -38,7 +38,8 @@ dependencies:
   random_string: ^2.1.0
   package_info: ^0.4.3
   websafe_svg: ^1.1.4
-  pull_to_refresh: ^1.6.0
+  pull_to_refresh: ^1.6.3
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:
@@ -64,7 +65,7 @@ flutter:
         - assets/svg/
         - assets/launch_screen_logo.svg
         - assets/images/
-        - assets/icon-font/buff/
+        - assets/icon-font/xj/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

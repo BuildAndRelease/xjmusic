@@ -1,18 +1,24 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 const socketDataHeaderLength = 4;
+const UDPPort = 18090;
+const TCPPort = 20090;
+const TCPWAITRESPONSETIME = 5;
 
 class TCPSocket {
-  final String ipAddress;
-  final String port;
-  final void Function(String response) onResponse;
-  final void Function(Error error) onError;
+  final String _ipAddress;
+  final String _port;
+  final void Function(String response) _onResponse;
+  final void Function(Error error) _onError;
 
-  TCPSocket(this.ipAddress, this.port, this.onResponse, this.onError);
+  TCPSocket(this._ipAddress, this._port, this._onResponse, this._onError);
 
   Socket _socket;
+
+  Timer _timeOutTimer;
 
   /// 缓存的网络数据，暂未处理（一般这里有数据，说明当前接收的数据不是一个完整的消息，需要等待其它数据的到来拼凑成一个完整的消息） */
   Uint8List _cacheData = Uint8List(0);
@@ -20,19 +26,19 @@ class TCPSocket {
   Future initTCPSocket() async {
     try {
       _socket = await Socket.connect(
-          this.ipAddress, int.tryParse(this.port) ?? 20090,
+          this._ipAddress, int.tryParse(this._port) ?? TCPPort,
           timeout: const Duration(seconds: 5));
       _socket.listen(_decodeHandle,
           onError: _errorHandler, onDone: _doneHandler, cancelOnError: false);
     } catch (e) {
-      onError?.call(StateError(e.toString()));
+      _onError?.call(StateError(e.toString()));
       _socket?.destroy();
-      print("socket 初始化失败$e");
+      print(e);
     }
   }
 
   Future dispose() async {
-    _socket.destroy();
+    _socket?.destroy();
     print("socket关闭处理");
   }
 
@@ -45,9 +51,19 @@ class TCPSocket {
         : header.buffer.asUint8List() + messageBody.buffer.asUint8List();
     try {
       _socket.add(msg);
+      if (_timeOutTimer != null) _timeOutTimer.cancel();
+      _timeOutTimer =
+          Timer(const Duration(seconds: TCPWAITRESPONSETIME), _responseTimeOut);
     } catch (e) {
-      onError?.call(StateError(e.toString()));
+      _onError?.call(StateError(e.toString()));
+      _socket?.destroy();
     }
+  }
+
+  void _responseTimeOut() {
+    _onError?.call(StateError("reponse time out"));
+    _socket?.destroy();
+    _timeOutTimer?.cancel();
   }
 
   void _decodeHandle(newData) {
@@ -58,34 +74,36 @@ class TCPSocket {
         return;
       }
       final messageBody = _cacheData.sublist(socketDataHeaderLength);
-      onResponse(utf8.decode(messageBody));
+      _onResponse?.call(utf8.decode(messageBody));
+      _timeOutTimer?.cancel();
+      _socket?.destroy();
     }
   }
 
   void _errorHandler(error, StackTrace trace) {
-    onError?.call(StateError(error.toString()));
-    _socket.close();
+    _onError?.call(StateError(error.toString()));
+    _socket?.destroy();
     print("捕获socket异常信息：error=$error，trace=${trace.toString()}");
   }
 
   void _doneHandler() {
-    _socket.destroy();
+    _socket?.destroy();
     print("socket完成处理");
   }
 }
 
 class UDPSocket {
-  final String port;
-  final void Function(String response) onResponse;
-  final void Function(Error error) onError;
+  final String _port;
+  final void Function(String response) _onResponse;
+  final void Function(Error error) _onError;
 
-  UDPSocket(this.port, this.onResponse, this.onError);
+  UDPSocket(this._port, this._onResponse, this._onError);
 
   RawDatagramSocket _socket;
 
   Future initUDPSocket() async {
     _socket = await RawDatagramSocket.bind(
-        InternetAddress.anyIPv4, int.tryParse(port) ?? 18090);
+        InternetAddress.anyIPv4, int.tryParse(_port) ?? UDPPort);
     _socket.broadcastEnabled = true;
     _socket.readEventsEnabled = true;
     _socket.writeEventsEnabled = true;
@@ -94,7 +112,7 @@ class UDPSocket {
   }
 
   Future dispose() async {
-    _socket.close();
+    _socket?.close();
     print("socket关闭处理");
   }
 
@@ -106,10 +124,10 @@ class UDPSocket {
         ? header.buffer.asUint8List()
         : header.buffer.asUint8List() + messageBody.buffer.asUint8List();
     try {
-      _socket.send(msg, InternetAddress.tryParse('255.255.255.255'),
-          int.tryParse(port) ?? 18090);
+      _socket?.send(msg, InternetAddress.tryParse('255.255.255.255'),
+          int.tryParse(_port) ?? UDPPort);
     } catch (e) {
-      onError?.call(StateError(e.toString()));
+      _onError?.call(StateError(e.toString()));
     }
   }
 
@@ -124,39 +142,38 @@ class UDPSocket {
         }
         final messageBody = cacheData.sublist(
             socketDataHeaderLength, msgLen + socketDataHeaderLength);
-        onResponse(utf8.decode(messageBody));
+        _onResponse?.call(utf8.decode(messageBody));
       }
     }
   }
 
   void _errorHandler(error, StackTrace trace) {
-    onError?.call(StateError(error.toString()));
-    _socket.close();
+    _onError?.call(StateError(error.toString()));
+    _socket?.close();
     print("捕获socket异常信息：error=$error，trace=${trace.toString()}");
   }
 
   void _doneHandler() {
-    _socket.close();
+    _socket?.close();
     print("socket完成处理");
   }
 }
 
 class MultiBroadCastSocket {
-  final String ipAddress;
-  final String port;
-  final void Function(String response) onResponse;
-  final void Function(Error error) onError;
+  final String _ipAddress;
+  final String _port;
+  final void Function(String response) _onResponse;
+  final void Function(Error error) _onError;
 
   MultiBroadCastSocket(
-      this.ipAddress, this.port, this.onResponse, this.onError);
+      this._ipAddress, this._port, this._onResponse, this._onError);
 
-  RawDatagramSocket socket;
+  RawDatagramSocket _socket;
 
   Future initUDPSocket() async {
-    socket =
-        await RawDatagramSocket.bind(ipAddress, int.tryParse(port) ?? 18090);
-    // socket.m
-    socket.listen(_decodeHandle,
+    _socket = await RawDatagramSocket.bind(
+        _ipAddress, int.tryParse(_port) ?? UDPPort);
+    _socket?.listen(_decodeHandle,
         onError: _errorHandler, onDone: _doneHandler, cancelOnError: false);
   }
 
@@ -167,9 +184,10 @@ class MultiBroadCastSocket {
         ? header.buffer.asUint8List()
         : header.buffer.asUint8List() + messageBody.buffer.asUint8List();
     try {
-      socket.send(msg, InternetAddress.anyIPv4, int.tryParse(port) ?? 18090);
+      _socket?.send(
+          msg, InternetAddress.anyIPv4, int.tryParse(_port) ?? UDPPort);
     } catch (e) {
-      onError?.call(StateError(e.toString()));
+      _onError?.call(StateError(e.toString()));
     }
   }
 
@@ -181,17 +199,18 @@ class MultiBroadCastSocket {
         return;
       }
       Int8List messageBody = cacheData.sublist(socketDataHeaderLength, msgLen);
-      onResponse(utf8.decode(messageBody));
+      _onResponse?.call(utf8.decode(messageBody));
     }
   }
 
   void _errorHandler(error, StackTrace trace) {
-    onError?.call(StateError(error.toString()));
-    socket.close();
+    _onError?.call(StateError(error.toString()));
+    _socket?.close();
     print("捕获socket异常信息：error=$error，trace=${trace.toString()}");
   }
 
   void _doneHandler() {
+    _socket?.close();
     print("socket关闭处理");
   }
 }

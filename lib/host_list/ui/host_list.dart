@@ -1,9 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xj_music/data_center/socket.dart';
-
-import 'dart:convert' as convert;
+import 'package:tuple/tuple.dart';
+import 'package:xj_music/broadcast/search_host_notify.dart';
+import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/host_api.dart';
+import 'package:xj_music/host_list/data_model/host_model.dart';
+import 'package:xj_music/host_list/ui/host_item.dart';
+import 'package:xj_music/themes/const.dart';
+import 'package:xj_music/util/icon_font.dart';
 
 class HostListPage extends StatefulWidget {
   @override
@@ -11,70 +18,63 @@ class HostListPage extends StatefulWidget {
 }
 
 class _HostListPageState extends State<HostListPage> {
+  Timer _searchHostTimer;
+  int _retrySearchHostInSeconds = 3;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  TCPSocket tcpSocket;
-  final searchHost = {
-    "direct": "request",
-    "sendId": "BA7700012E27F79B837E",
-    "arg": {},
-    "cmd": "SearchHost",
-    "recvId": "ffffffffffffffffffff",
-    "direction": "request"
-  };
-
-  final getTopList = {
-    "direct": "request",
-    "sendId": "BA7700012E27F79B837E",
-    "arg": {},
-    "cmd": "GetTopList",
-    "recvId": "BA5000002E27F79B837E",
-    "direction": "request"
-  };
-
-  // {
-  //   "sendId": "BA50EC01001122334455",
-  //   "recvId": "BA50001001122334456",
-  //   "cmd": "SearchHost",
-  //   "direction": "request",
-  //   "arg": {}
-  // };
+  StreamSubscription _searchHostSubscription;
+  final List<Tuple2<SearchHostNotify, GetHostRoomListResponseModel>>
+      _searchedHost = [];
 
   @override
   void initState() {
     super.initState();
-    tcpSocket = TCPSocket("192.168.0.105", "20090", _onResponse, _onError);
-    tcpSocket.initTCPSocket();
+    _searchHostSubscription = DataCenter
+        .instance.searchHostNotifyStreamController.stream
+        .listen(_onSearchedHost);
+    _startSearchHost();
   }
 
-  void _onResponse(String response) {
-    final t = convert.jsonDecode(response);
-    print(t);
+  @override
+  void dispose() {
+    _searchHostTimer?.cancel();
+    _refreshController.dispose();
+    _searchHostSubscription.cancel();
+    super.dispose();
   }
 
-  void _onError(Error error) {
-    print(error);
+  void _startSearchHost() {
+    DataCenter.instance.searchHost();
+    _searchHostTimer?.cancel();
+    _searchHostTimer =
+        Timer(Duration(seconds: ++_retrySearchHostInSeconds), _startSearchHost);
+  }
+
+  void _onSearchedHost(SearchHostNotify searchHostNotify) {
+    final contain = _searchedHost.length > 0
+        ? _searchedHost.firstWhere(
+            (element) => element.item1.deviceId == searchHostNotify.deviceId)
+        : null;
+    if (contain == null) {
+      HostApi.getHostRoomList(
+        searchHostNotify.deviceId,
+        ipAddress: searchHostNotify.deviceIp,
+        onResponse: (response) {
+          _searchedHost.add(Tuple2(searchHostNotify, response));
+          if (mounted) setState(() {});
+        },
+      );
+    }
   }
 
   void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
-
-    tcpSocket
-        .sendMsg(convert.Utf8Encoder().convert(convert.jsonEncode(getTopList)));
-
-    // udpSocket
-    // .sendMsg(convert.Utf8Encoder().convert(convert.jsonEncode(searchHost)));
-  }
-
-  void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    if (mounted) setState(() {});
-    _refreshController.loadComplete();
+    _searchedHost.clear();
+    setState(() {});
+    _retrySearchHostInSeconds = 3;
+    _startSearchHost();
+    Future.delayed(Duration(seconds: _retrySearchHostInSeconds), () {
+      _refreshController.refreshCompleted();
+    });
   }
 
   @override
@@ -91,8 +91,7 @@ class _HostListPageState extends State<HostListPage> {
       ),
       body: SmartRefresher(
         enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(),
+        enablePullUp: false,
         footer: CustomFooter(
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
@@ -100,8 +99,6 @@ class _HostListPageState extends State<HostListPage> {
               body = Text("pull up load");
             } else if (mode == LoadStatus.loading) {
               body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
             } else if (mode == LoadStatus.canLoading) {
               body = Text("release to load more");
             } else {
@@ -115,27 +112,14 @@ class _HostListPageState extends State<HostListPage> {
         ),
         controller: _refreshController,
         onRefresh: _onRefresh,
-        onLoading: _onLoading,
         child: ListView.builder(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(children: [Text('data')]),
-                ListTile(
-                  title: Text(
-                    '房间名称$index',
-                    style: theme.textTheme.bodyText2,
-                  ),
-                  trailing: Switch(
-                    value: false,
-                    onChanged: (changed) {},
-                    activeColor: theme.primaryColor,
-                  ),
-                )
-              ],
-            );
+            final device = _searchedHost[index];
+            return HostItem(device);
           },
-          itemCount: 5,
+          itemExtent: 100.0,
+          itemCount: _searchedHost.length,
         ),
       ),
     );
