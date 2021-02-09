@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:xj_music/broadcast/search_host_notify.dart';
 import 'package:xj_music/data_center/socket.dart';
+import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/util/shared_util.dart';
 
@@ -34,6 +35,9 @@ class DataCenter {
   GetHostRoomListResponseModel roomListResponseModel;
   // 当前房间信息
   GetHostRoomInfoResponseModel roomInfoResponseModel;
+  // 当前房间播放内容
+  ValueNotifier<GetPlayingInfoResponseModel> playingInfoResponseModelNotifier =
+      ValueNotifier(null);
 
   UDPSocket udpSocket;
 
