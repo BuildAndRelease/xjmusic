@@ -3,6 +3,7 @@ import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 
 import 'get_playing_info_response_model.dart';
+import 'get_room_stat_info_response_model.dart';
 
 // 设备控制接口
 class HostApi {
@@ -55,6 +56,25 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(GetPlayingInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+//4.4.3获取当前房间的基本状态信息（用于一次性获取较多的信息）
+  static getRoomStatInfo(
+      {void Function(GetRoomStatInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetRoomStatInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetRoomStatInfoResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
