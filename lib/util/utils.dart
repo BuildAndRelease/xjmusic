@@ -14,7 +14,7 @@ TextPainter calculateTextHeight(BuildContext context, String value,
     TextStyle style, double maxWidth, int maxLines) {
   ///AUTO：华为手机如果不指定locale的时候，该方法算出来的文字高度是比系统计算偏小的。
   final TextPainter painter = TextPainter(
-      locale: Localizations.localeOf(context, nullOk: true),
+      locale: Localizations.maybeLocaleOf(context),
       maxLines: maxLines,
       textDirection: TextDirection.ltr,
       text: TextSpan(text: value, style: style));
