@@ -1,7 +1,9 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
+import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
+import 'get_dev_info_response_model.dart';
 import 'get_playing_info_response_model.dart';
 import 'get_room_stat_info_response_model.dart';
 
@@ -75,6 +77,44 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(GetRoomStatInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+//4.5.1获取设备信息
+  static getDevInfo(
+      {void Function(GetDevInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetDevInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDevInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+//4.5.2设置设备信息[用于更改房间名称]
+  static setDevInfo(String devName,
+      {void Function(SetDevInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"devName": devName};
+    await DataCenter.instance.sendMsgToDevice("SetDevInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SetDevInfoResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
