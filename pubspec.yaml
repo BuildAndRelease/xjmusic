@@ -41,6 +41,7 @@ dependencies:
   pull_to_refresh: ^1.6.3
   shared_preferences: ^0.5.12+4
   fluttericon: ^1.0.7
+  cached_network_image: ^2.5.0
 
 dev_dependencies:
   flutter_test:

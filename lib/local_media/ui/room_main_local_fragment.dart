@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:xj_music/routes.dart';
 
 class RoomMainLocalFragment extends StatefulWidget {
   @override
@@ -12,21 +13,23 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
   @override
   Widget build(BuildContext context) {
     List<Widget> songMenuItem = [];
-    songMenuItem.add(ListTile(
-      tileColor: Theme.of(context).bottomAppBarColor,
-      leading: Text(
-        "1",
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-      title: Text(
-        "我喜欢",
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-      trailing: Icon(Icons.chevron_right),
-    ));
-    songMenuItem.add(Divider(
-      height: 0.5,
-    ));
+    for (var i = 0; i < 30; i++) {
+      songMenuItem.add(ListTile(
+        tileColor: Theme.of(context).bottomAppBarColor,
+        leading: Text(
+          "$i",
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        title: Text(
+          "我喜欢",
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        trailing: Icon(Icons.chevron_right),
+      ));
+      songMenuItem.add(Divider(
+        height: 0.5,
+      ));
+    }
     return ListView(
       children: [
         ListTile(
@@ -39,6 +42,7 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
           ),
           trailing: Icon(Icons.chevron_right),
           tileColor: Theme.of(context).bottomAppBarColor,
+          onTap: () => Routes.pushLocalMusicCategoryPage(context),
         ),
         Divider(height: 0.5),
         ListTile(
