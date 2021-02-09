@@ -1,9 +1,11 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
+import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
 import 'get_dev_info_response_model.dart';
+import 'get_dev_stat_response_model.dart';
 import 'get_playing_info_response_model.dart';
 import 'get_room_stat_info_response_model.dart';
 
@@ -28,6 +30,7 @@ class HostApi {
     }, onError: onError);
   }
 
+//4.6.2开关机
   static setDevStat(String hostId, String devStat,
       {String ipAddress,
       void Function(SetDevStatResponseModel response) onResponse,
@@ -115,6 +118,44 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(SetDevInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+//4.6.1获取设备开关机状态
+  static getDevStat(
+      {void Function(GetDevStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetDevStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDevStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.6.4房间全开/全关
+  static setAllDevStat(String devStat,
+      {void Function(SetAllDevStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"devStat": devStat};
+    await DataCenter.instance.sendMsgToDevice("SetAllDevStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SetAllDevStatResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {

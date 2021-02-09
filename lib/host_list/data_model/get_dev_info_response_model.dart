@@ -8,9 +8,9 @@ class GetDevInfoResponseModel extends BaseProtocol {
   String hardVer;
 
   GetDevInfoResponseModel(Map json) : super(json) {
-    resultCode = arg['resultCode'];
-    devName = arg['devName'];
-    softVer = arg['softVer'];
-    hardVer = arg['hardVer'];
+    resultCode = arg['resultCode'].toString();
+    devName = arg['devName'].toString();
+    softVer = arg['softVer'].toString();
+    hardVer = arg['hardVer'].toString();
   }
 }

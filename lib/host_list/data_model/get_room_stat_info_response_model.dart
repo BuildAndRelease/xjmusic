@@ -15,14 +15,14 @@ class GetRoomStatInfoResponseModel extends BaseProtocol {
   BasicMedia media;
 
   GetRoomStatInfoResponseModel(Map json) : super(json) {
-    resultCode = arg['resultCode'];
-    devStat = arg['devStat'];
-    playStat = arg['playStat'];
-    volume = arg['volume'];
-    playMode = arg['playMode'];
-    roomStat = arg['roomStat'];
-    playTime = arg['playTime'];
-    muteStat = arg['muteStat'];
+    resultCode = arg['resultCode'].toString();
+    devStat = arg['devStat'].toString();
+    playStat = arg['playStat'].toString();
+    volume = arg['volume'].toString();
+    playMode = arg['playMode'].toString();
+    roomStat = arg['roomStat'].toString();
+    playTime = arg['playTime'].toString();
+    muteStat = arg['muteStat'].toString();
     media = arg['media'];
     switch (arg["media"]["mediaSrc"]) {
       case "cloudMusic":
