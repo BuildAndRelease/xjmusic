@@ -1,15 +1,18 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/treble_response_model.dart';
 import 'package:xj_music/host_list/data_model/volume_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
+import 'bass_response_model.dart';
 import 'get_dev_info_response_model.dart';
 import 'get_dev_stat_response_model.dart';
 import 'eq_response_model.dart';
 import 'get_playing_info_response_model.dart';
 import 'get_room_stat_info_response_model.dart';
+import 'mute_response_model.dart';
 
 // 设备控制接口
 class HostApi {
@@ -272,6 +275,120 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(EqResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.9.1获取低音
+  static getBass(
+      {void Function(BassResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetBass", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(BassResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.9.2设置低音
+  static setBass(String bass,
+      {void Function(BassResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"bass": bass};
+    await DataCenter.instance.sendMsgToDevice("SetBass", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(BassResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.10.1获取高音
+  static getTreble(
+      {void Function(TrebleResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetTreble", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TrebleResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.10.2设置高音
+  static setTreble(String treb,
+      {void Function(TrebleResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"treb": treb};
+    await DataCenter.instance.sendMsgToDevice("SetTreble", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TrebleResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.10.1获取高音
+  static getMute(
+      {void Function(MuteResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetMute", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(MuteResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.10.2设置高音
+  static setMute(String muteStat,
+      {void Function(MuteResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"muteStat": muteStat};
+    await DataCenter.instance.sendMsgToDevice("SetMute", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(MuteResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
