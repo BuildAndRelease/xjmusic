@@ -10,7 +10,7 @@ class BaseProtocol {
     if (json == null) return;
     sendId = json["sendId"];
     recvId = json["recvId"];
-    cmd = json["recvId"];
+    cmd = json["cmd"];
     direction = json["direction"];
     final argJson = json["arg"];
     if (argJson != null && argJson is Map) {
