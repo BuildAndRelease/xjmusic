@@ -6,7 +6,7 @@ class SetDevInfoResponseModel extends BaseProtocol {
   String devName;
 
   SetDevInfoResponseModel(Map json) : super(json) {
-    resultCode = arg['resultCode'].toString()
+    resultCode = arg['resultCode'].toString();
     devName = arg['devName'].toString();
   }
 }
