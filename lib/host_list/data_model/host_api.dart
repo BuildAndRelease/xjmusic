@@ -1,5 +1,8 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
+import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
+import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
 import 'package:xj_music/host_list/data_model/volume_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
@@ -389,6 +392,120 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(MuteResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.12.1获取播放模式
+  static getPlayMode(
+      {void Function(PlayModeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetPlayMode", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayModeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.12.2设置播放模式
+  static setPlayMode(String playMode,
+      {void Function(PlayModeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"playMode": playMode};
+    await DataCenter.instance.sendMsgToDevice("SetPlayMode", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayModeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.13.1获取当前系统时间
+  static getSysTime(
+      {void Function(SysTimeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetSysTime", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SysTimeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.13.2设置当前系统时间
+  static setSysTime(String time,
+      {void Function(SysTimeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"time": time};
+    await DataCenter.instance.sendMsgToDevice("SetSysTime", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SysTimeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.14.1获取系统日期
+  static getSysDate(
+      {void Function(SysDateResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetSysDate", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SysDateResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.14.2修改系统日期
+  static setSysDate(String date,
+      {void Function(SysDateResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"date": date};
+    await DataCenter.instance.sendMsgToDevice("SetSysDate", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SysDateResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
