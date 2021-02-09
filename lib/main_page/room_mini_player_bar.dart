@@ -15,6 +15,7 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
   void initState() {
     _controller =
         AnimationController(duration: const Duration(seconds: 20), vsync: this);
+    _controller.repeat();
     super.initState();
   }
 

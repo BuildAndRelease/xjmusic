@@ -38,10 +38,11 @@ class _RoomMainPageState extends State<RoomMainPage>
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           iconSize: 24,
-          color: Theme.of(context).iconTheme.color,
+          color: Colors.white,
           onPressed: () {
             Routes.pop(context);
           },
@@ -50,7 +51,7 @@ class _RoomMainPageState extends State<RoomMainPage>
           IconButton(
             icon: Icon(Icons.search),
             iconSize: 24,
-            color: Theme.of(context).iconTheme.color,
+            color: Colors.white,
             onPressed: () => Scaffold.of(context).openEndDrawer(),
           ),
           Builder(
@@ -58,7 +59,7 @@ class _RoomMainPageState extends State<RoomMainPage>
               return IconButton(
                 icon: Icon(Icons.menu),
                 iconSize: 24,
-                color: Theme.of(context).iconTheme.color,
+                color: Colors.white,
                 onPressed: () => Scaffold.of(context).openEndDrawer(),
               );
             },
@@ -67,14 +68,17 @@ class _RoomMainPageState extends State<RoomMainPage>
         title: Text(
           DataCenter.instance.currentRoomName ??
               DataCenter.instance.deviceModelWithDeviceId(),
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2
+              .copyWith(color: Colors.white),
         ),
         centerTitle: true,
         bottom: TabBar(
           tabs: _tabs,
           controller: _tabController,
-          labelColor: const Color(0xFF1F2125),
-          unselectedLabelColor: Theme.of(context).disabledColor,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white.withOpacity(0.3),
           indicatorSize: TabBarIndicatorSize.label,
           indicatorColor: Colors.transparent,
         ),
@@ -115,7 +119,10 @@ class _RoomMainPageState extends State<RoomMainPage>
       mainAxisSize: MainAxisSize.min,
       children: [
         sizeHeight8,
-        Icon(iconData, size: 20),
+        Icon(
+          iconData,
+          size: 20,
+        ),
         sizeHeight8,
       ],
     ));
