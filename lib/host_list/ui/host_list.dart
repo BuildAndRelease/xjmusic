@@ -81,10 +81,10 @@ class _HostListPageState extends State<HostListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: theme.appBarTheme.color,
+        backgroundColor: theme.primaryColor,
         title: Text(
           '设备列表',
-          style: theme.textTheme.bodyText2,
+          style: theme.textTheme.bodyText2.copyWith(color: Colors.white),
         ),
       ),
       body: SmartRefresher(
