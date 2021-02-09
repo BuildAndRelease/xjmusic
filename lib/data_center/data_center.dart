@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:xj_music/broadcast/search_host_notify.dart';
 import 'package:xj_music/data_center/socket.dart';
+import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/util/shared_util.dart';
 
 class DataCenter {
@@ -20,11 +21,19 @@ class DataCenter {
   String deviceUUID = "";
 
   // 当前操作通道标识
-  String currentChannelId = "";
+  get currentRoomId => roomInfoResponseModel?.roomId ?? "";
   // 当前操作主机标识
-  String currentHostId = "";
+  get currentHostId => searchHostNotify?.deviceId ?? "";
   // 当前操作主机IP
-  String currentHostIp = "";
+  get currentHostIp => searchHostNotify?.deviceIp ?? "";
+  // 当前操作主机名称
+  get currentRoomName => roomInfoResponseModel?.roomName;
+  // 当前主机信息
+  SearchHostNotify searchHostNotify;
+  // 当前主机房间列表信息
+  GetHostRoomListResponseModel roomListResponseModel;
+  // 当前房间信息
+  GetHostRoomInfoResponseModel roomInfoResponseModel;
 
   UDPSocket udpSocket;
 
@@ -52,8 +61,8 @@ class DataCenter {
     }
   }
 
-  String deviceModelWithDeviceId(String deviceId) {
-    if (deviceId?.startsWith("BA50") ?? false) {
+  String deviceModelWithDeviceId({String deviceId}) {
+    if ((deviceId ?? currentHostId).startsWith("BA50") ?? false) {
       return "S5";
     } else {
       return "未知机型";
@@ -94,7 +103,7 @@ class DataCenter {
       final requestProtocol = DataCenter.instance.requestJsonMap(
           cmd: cmd,
           arg: arg,
-          recvId: recvId ?? DataCenter.instance.currentChannelId);
+          recvId: recvId ?? DataCenter.instance.currentRoomId);
       socket.sendMsg(
           convert.Utf8Encoder().convert(convert.jsonEncode(requestProtocol)));
     } catch (e) {

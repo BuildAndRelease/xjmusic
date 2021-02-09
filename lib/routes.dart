@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xj_music/main_page/room_main_page.dart';
 
 import 'host_list/ui/host_list.dart';
 import 'splash_page.dart';
@@ -7,47 +8,7 @@ import 'util/custom_route.dart';
 import 'util/global.dart';
 
 const String homeRoute = "home";
-const String loginRoute = "login";
-const String consoleRoute = "console";
-const String createChannelRoute = "createChannel";
-const String videoRoomRoute = "videoRoom";
-const String videoRoomTextRoute = "videoRoomText";
-const String personalRoute = "personal";
-const String modifyUserInfoRoute = "modifyUserInfo";
-const String loginCaptchaRoute = "loginCaptcha";
-const String privacySetRoute = "privacySet";
-const String shieldSetRoute = "shieldSet";
-const String reportSetRoute = "reportSet";
-const String suggestFeedbackRoute = "suggestFeedback";
-const String aboutUsRoute = "aboutUs";
-const String notifySetRoute = "notifySet";
-const String loginModifyUserInfoRoute = "loginModifyUserInfo";
-const String acceptInviteRoute = "acceptInvite";
-const String createGuildRoute = "createGuild";
-const String joinGuildRoute = "joinGuild";
-const String invalidInviteRoute = "invalidInvite";
-const String videoPage = "videoPage";
-const String commonGuildRoute = "commonGuild";
-const String commonFriendRoute = "commonFriend";
-const String topicRoute = "topic";
-const String quickReplyRoute = "quickReply";
-const String quickReplyEditRoute = "quickReplyEdit";
-const String guildSettingRoute = "guildSetting";
-const String roleManageRoute = "roleManage";
-const String roleSettingRoute = "roleSetting";
-const String memberManageRoute = "memberManage";
-const String memberManageInviteRoute = "memberManageInvite";
-const String memberSettingRoute = "memberSetting";
-const String channelManageRoute = "channelManage";
-const String channelSettingRoute = "channelSetting";
-const String channelPermissionRoute = "channelPermission";
-const String addOverwriteRoute = "addOverwrite";
-const String guildManageRoute = "guildManage";
-const String createChannelCateRoute = "createChannelCate";
-const String guildModifyRoute = "guildModify";
-const String htmlRoute = "html";
-const String countryRoute = "country";
-const String pinListRoute = "pinList";
+const String roomMainPageRoute = "roomMainPage";
 
 class Routes {
   static String currentRoute;
@@ -90,6 +51,10 @@ class Routes {
   static Future pushHomePage(BuildContext context) async {
     return push(context, HostListPage(), homeRoute,
         replace: true, fadeIn: true);
+  }
+
+  static Future pushRoomMainPage(BuildContext context) {
+    return push(context, RoomMainPage(), roomMainPageRoute, fadeIn: true);
   }
 
   static void backHome() {

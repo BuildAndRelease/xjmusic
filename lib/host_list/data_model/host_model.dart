@@ -19,6 +19,7 @@ class GetHostRoomListResponseModel extends BaseProtocol {
 }
 
 class GetHostRoomInfoResponseModel {
+  Map json;
   String roomName;
   String roomId;
   String devStat;
@@ -28,6 +29,7 @@ class GetHostRoomInfoResponseModel {
   String serialId;
 
   GetHostRoomInfoResponseModel(Map json) {
+    this.json = json;
     roomName = json["roomName"];
     roomId = json["roomId"];
     devStat = json["devStat"];
@@ -35,5 +37,19 @@ class GetHostRoomInfoResponseModel {
     playStat = json["playStat"];
     playName = json["playName"];
     serialId = json["serialId"];
+  }
+
+  void modifyDevStat(String stat) {
+    json["devStat"] = stat;
+  }
+}
+
+class SetDevStatResponseModel extends BaseProtocol {
+  String resultCode;
+  String devStat;
+
+  SetDevStatResponseModel(Map json) : super(json) {
+    resultCode = arg["resultCode"].toString();
+    devStat = arg["devStat"].toString();
   }
 }

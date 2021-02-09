@@ -9,8 +9,6 @@ import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/ui/host_item.dart';
-import 'package:xj_music/themes/const.dart';
-import 'package:xj_music/util/icon_font.dart';
 
 class HostListPage extends StatefulWidget {
   @override

@@ -21,4 +21,23 @@ class HostApi {
       }
     }, onError: onError);
   }
+
+  static setDevStat(String hostId, String devStat,
+      {String ipAddress,
+      void Function(SetDevStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"devStat": devStat};
+    await DataCenter.instance.sendMsgToDevice("SetDevStat", arg,
+        recvId: hostId, ipAddress: ipAddress, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SetDevStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
 }
