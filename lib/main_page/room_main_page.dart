@@ -45,6 +45,12 @@ class _RoomMainPageState extends State<RoomMainPage>
           },
         ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            iconSize: 24,
+            color: Theme.of(context).iconTheme.color,
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+          ),
           Builder(
             builder: (context) {
               return IconButton(
