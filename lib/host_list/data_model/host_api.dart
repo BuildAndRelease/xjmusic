@@ -1,6 +1,9 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
+import 'package:xj_music/host_list/data_model/play_music_response_model.dart';
+import 'package:xj_music/host_list/data_model/play_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
@@ -9,6 +12,8 @@ import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
+import 'audio_source_response_model.dart';
+import 'aux_response_model.dart';
 import 'bass_response_model.dart';
 import 'get_dev_info_response_model.dart';
 import 'get_dev_stat_response_model.dart';
@@ -506,6 +511,177 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(SysDateResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.1播放本地音乐
+  static playLocalMusic(Map media,
+      {void Function(PlayMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayLocalMusic", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.2播放云音乐
+  static playCloudMusic(Map media,
+      {void Function(PlayMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayCloudMusic", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.3播放云音乐(列表形式)
+  static playCloudMusicList(List mediaList, Map media,
+      {void Function(PlayMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaList": mediaList, "media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayCloudMusicList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.4播放云语言节目
+  static playCloudStory(Map media,
+      {void Function(PlayMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayCloudStory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.5播放网络电台
+  static playCloudNetFm(Map media,
+      {void Function(PlayMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayCloudNetFm", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.6切换到Aux
+  static SwitchToAux(String auxId,
+      {void Function(AuxResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"auxId": auxId};
+    await DataCenter.instance.sendMsgToDevice("SwitchToAux", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(AuxResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.7媒体播放、暂停、上一曲、下一曲控制
+  static playCmd(String playCmd,
+      {void Function(PlayCmdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"playCmd": playCmd};
+    await DataCenter.instance.sendMsgToDevice("PlayCmd", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayCmdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.8切换音源
+  static setAudioSource(String audioSource, String id,
+      {void Function(AudioSourceResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"audioSource": audioSource, "id": id};
+    await DataCenter.instance.sendMsgToDevice("SetAudioSource", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(AudioSourceResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.15.9获取当前播放状态
+  static GetPlayStat(
+      {void Function(PlayStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetPlayStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayStatResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
