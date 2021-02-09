@@ -9,6 +9,8 @@ class LocalMusicCategoryPage extends StatefulWidget {
 class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
   @override
   Widget build(BuildContext context) {
-    return LocalMusicUIFrame();
+    return LocalMusicUIFrame(
+      title: "根目录",
+    );
   }
 }
