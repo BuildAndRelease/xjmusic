@@ -1,5 +1,6 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/volume_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
@@ -156,6 +157,82 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(SetAllDevStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.7.1获取音量
+  static getVolume(
+      {void Function(VolumeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetVolume", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(VolumeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.7.2设置音量
+  static setVolume(String volume,
+      {void Function(VolumeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"volume": volume};
+    await DataCenter.instance.sendMsgToDevice("SetVolume", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(VolumeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.7.3音量加
+  static addVolume(String volume,
+      {void Function(VolumeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"volume": volume};
+    await DataCenter.instance.sendMsgToDevice("AddVolume", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(VolumeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.7.4音量减
+  static subVolume(String volume,
+      {void Function(VolumeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"volume": volume};
+    await DataCenter.instance.sendMsgToDevice("SubVolume", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(VolumeResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
