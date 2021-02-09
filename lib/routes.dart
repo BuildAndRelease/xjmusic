@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 
 import 'host_list/ui/host_list.dart';
@@ -9,6 +10,7 @@ import 'util/global.dart';
 
 const String homeRoute = "home";
 const String roomMainPageRoute = "roomMainPage";
+const String localMusicCategoryPageRoute = "localMusicCategoryPage";
 
 class Routes {
   static String currentRoute;
@@ -55,6 +57,11 @@ class Routes {
 
   static Future pushRoomMainPage(BuildContext context) {
     return push(context, RoomMainPage(), roomMainPageRoute, fadeIn: true);
+  }
+
+  static Future pushLocalMusicCategoryPage(BuildContext context) {
+    return push(context, LocalMusicCategoryPage(), localMusicCategoryPageRoute,
+        fadeIn: true);
   }
 
   static void backHome() {

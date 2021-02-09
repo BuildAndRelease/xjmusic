@@ -9,6 +9,8 @@ import 'package:xj_music/story/ui/room_main_story_fragment.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 
+import 'room_mini_player_bar.dart';
+
 class RoomMainPage extends StatefulWidget {
   @override
   _RoomMainPageState createState() => _RoomMainPageState();
@@ -78,10 +80,7 @@ class _RoomMainPageState extends State<RoomMainPage>
         ),
       ),
       body: TabBarView(controller: _tabController, children: _tabViews),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.brown,
-      ),
+      bottomNavigationBar: RoomMiniPlayerBar(),
     );
   }
 

@@ -33,6 +33,7 @@ class NoSplash extends InteractiveInkFeature {
   })  : assert(controller != null),
         assert(referenceBox != null),
         super(
+            color: Colors.transparent,
             controller: controller,
             referenceBox: referenceBox,
             onRemoved: onRemoved) {
