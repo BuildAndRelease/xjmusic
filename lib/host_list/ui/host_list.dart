@@ -83,7 +83,7 @@ class _HostListPageState extends State<HostListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: theme.primaryColor,
+        backgroundColor: theme.appBarTheme.color,
         title: Text(
           '设备列表',
           style: theme.textTheme.bodyText2,
@@ -113,7 +113,6 @@ class _HostListPageState extends State<HostListPage> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         child: ListView.builder(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           itemBuilder: (context, index) {
             final device = _searchedHost[index];
             return HostItem(device);
