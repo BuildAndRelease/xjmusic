@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 
+// 设备控制接口
 class HostApi {
   static getHostRoomList(String hostId,
       {String ipAddress,
