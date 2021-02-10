@@ -17,13 +17,16 @@ import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
+import 'folder_response_model.dart';
 import 'add_favorite_play_list_response_model.dart';
 import 'audio_source_response_model.dart';
 import 'aux_response_model.dart';
 import 'bass_response_model.dart';
-import 'contain_favorite_media_response_model.dart';
+import 'contain_response_model.dart';
+import 'folder_id_response_model.dart';
 import 'del_favorite_media_response_model.dart';
 import 'del_favorite_play_list_response_model.dart';
+import 'get_alum_set_favorite_list_response_model.dart';
 import 'get_favorite_media_response_model.dart';
 import 'media_src_response_model.dart';
 import 'get_dev_info_response_model.dart';
@@ -1035,7 +1038,7 @@ class HostApi {
   }
 
   //4.19.10将歌曲从指定的自建歌单中取消收藏
-  static DelFavoriteMedia(String playListId, String mediaSrc, List mediaList,
+  static delFavoriteMedia(String playListId, String mediaSrc, List mediaList,
       {void Function(DelFavoriteMediaResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {
@@ -1084,7 +1087,7 @@ class HostApi {
 
   //4.19.13判断歌曲是否已收藏
   static containFavoriteMedia(String playListId, String mediaSrc, Map media,
-      {void Function(ContainFavoriteMediaResponseModel response) onResponse,
+      {void Function(ContainResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "playListId": playListId,
@@ -1096,7 +1099,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ContainFavoriteMediaResponseModel(json));
+          onResponse?.call(ContainResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -1105,7 +1108,7 @@ class HostApi {
     }, onError: onError);
   }
 
-  //4.19.13判断歌曲是否已收藏
+  //4.19.14播放我的自建歌单中的歌曲
   static playFavoriteMedia(String playListId, String mediaSrc, Map media,
       {void Function(PlayResultResponseModel response) onResponse,
       void Function(Error error) onError}) async {
@@ -1120,6 +1123,177 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(PlayResultResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.1获取收藏歌单列表
+  static getAlbumSetFavoriteList(
+      {void Function(GetAlbumSetFavoriteListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetAlbumSetFavoriteList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetAlbumSetFavoriteListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.2新建收藏歌单
+  static addAlbumSetFavoriteList(String folderName,
+      {void Function(FolderResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderName": folderName};
+    await DataCenter.instance.sendMsgToDevice("AddAlbumSetFavoriteList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.4删除收藏歌单
+  static delAlbumSetFavoriteList(String folderId,
+      {void Function(FolderIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId};
+    await DataCenter.instance.sendMsgToDevice("DelAlbumSetFavoriteList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.6修改收藏歌单的名称
+  static renameAlbumSetFavorite(String folderId, String folderName,
+      {void Function(FolderResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "folderName": folderName};
+    await DataCenter.instance.sendMsgToDevice("RenameAlbumSetFavorite", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.8将歌单收藏到指定的收藏歌单
+  static addSetToAlbumSetFavorite(String folderId, Map albumSet,
+      {void Function(FolderResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "albumSet": albumSet};
+    await DataCenter.instance.sendMsgToDevice("AddSetToAlbumSetFavorite", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.9将歌单收藏到指定的收藏歌单[批量]
+  static addSetListToAlbumSetFavorite(String folderId, List list,
+      {void Function(FolderResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "list": list};
+    await DataCenter.instance.sendMsgToDevice(
+        "AddSetListToAlbumSetFavorite", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.11将歌单从指定的收藏歌单中取消收藏
+  static delFavoriteSet(String folderId, List list,
+      {void Function(FolderIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "list": list};
+    await DataCenter.instance.sendMsgToDevice("DelFavoriteSet", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.13获取指定的专辑收藏夹中专辑列表
+  static getFavoriteSet(String folderId, String albumTypeName,
+      {void Function(FolderIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "albumTypeName": albumTypeName};
+    await DataCenter.instance.sendMsgToDevice("GetFavoriteSet", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(FolderIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.20.14判断专辑是否已收藏
+  static containFavoriteSet(String folderId, Map albumSet,
+      {void Function(ContainResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"folderId": folderId, "albumSet": albumSet};
+    await DataCenter.instance.sendMsgToDevice("ContainFavoriteSet", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ContainResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
