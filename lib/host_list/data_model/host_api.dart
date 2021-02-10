@@ -11,10 +11,14 @@ import 'package:xj_music/host_list/data_model/play_time_response_model%20copy.da
 import 'package:xj_music/host_list/data_model/rename_favorite_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/rename_talk_response_model.dart';
 import 'package:xj_music/host_list/data_model/result_code_response_model.dart';
+import 'package:xj_music/host_list/data_model/room_serial_id_response_model.dart';
 import 'package:xj_music/host_list/data_model/scene_id_response_model.dart';
 import 'package:xj_music/host_list/data_model/scene_response_model.dart';
+import 'package:xj_music/host_list/data_model/set_room_serial_id_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
+import 'package:xj_music/host_list/data_model/system_ip_info_response_model.dart';
+import 'package:xj_music/host_list/data_model/system_server_name_response_model.dart';
 import 'package:xj_music/host_list/data_model/talk_room_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/talk_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/timer_response_model.dart';
@@ -1851,6 +1855,147 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(ModifyDelayCloseTimerResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.26.1获取房间串口ID
+  static getRoomSerialId(
+      {void Function(RoomSerialIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetRoomSerialId", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(RoomSerialIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.26.2设置房间串口ID
+  static setRoomSerialId(String serialId,
+      {void Function(RoomSerialIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"serialId": serialId};
+    await DataCenter.instance.sendMsgToDevice("SetRoomSerialId", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(RoomSerialIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.26.3设置房间串口ID[列表形式]
+  static setRoomSerialIdList(List list,
+      {void Function(SetRoomSerialIdListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"list": list};
+    await DataCenter.instance.sendMsgToDevice("SetRoomSerialIdList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SetRoomSerialIdListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.27.1获取系统主机名称
+  static getSystemServerName(
+      {void Function(SystemServerNameResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetSystemServerName", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SystemServerNameResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.27.2设置系统主机名称
+  static setSystemServerName(String serverName,
+      {void Function(SystemServerNameResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"serverName": serverName};
+    await DataCenter.instance.sendMsgToDevice("SetSystemServerName", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SystemServerNameResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.28.1获取主机IP信息
+  static getServerIpInfo(
+      {void Function(ServerIpInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetServerIpInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ServerIpInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.28.2设置主机IP信息
+  static setServerIpInfo(String autoSetIp, String address, String gateway,
+      String netmask, String dns1, String dns2,
+      {void Function(ServerIpInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "autoSetIp": autoSetIp,
+      "address": address,
+      "gateway": gateway,
+      "netmask": netmask,
+      "dns1": dns1,
+      "dns2": dns2
+    };
+    await DataCenter.instance.sendMsgToDevice("SetServerIpInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ServerIpInfoResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
