@@ -2,6 +2,7 @@ import 'package:xj_music/broadcast/base_protocol.dart';
 
 //4.4.1获取房间当前信息
 class GetPlayingInfoResponseModel extends BaseProtocol {
+  Map json;
   String resultCode;
   String roomStat;
   String talkId;
@@ -9,6 +10,7 @@ class GetPlayingInfoResponseModel extends BaseProtocol {
   BasicMedia media;
 
   GetPlayingInfoResponseModel(Map json) : super(json) {
+    this.json = json;
     resultCode = arg["resultCode"].toString();
     roomStat = arg["roomStat"].toString();
     switch (roomStat) {
