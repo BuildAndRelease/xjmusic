@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:xj_music/broadcast/play_stat_notify.dart';
+import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
@@ -15,7 +17,6 @@ class RoomMiniPlayerBar extends StatefulWidget {
 class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
     with TickerProviderStateMixin {
   AnimationController _controller;
-
   @override
   void initState() {
     _controller =
@@ -23,7 +24,15 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
     _controller.repeat();
     HostApi.getPlayingInfo(
       onResponse: (response) {
-        DataCenter.instance.playingInfoResponseModelNotifier.value = response;
+        DataCenter.instance.playingInfoNotifyStreamController
+            .add(PlayingInfoNotify(response.json));
+      },
+      onError: (error) => showToast(error.toString()),
+    );
+    HostApi.getPlayStat(
+      onResponse: (response) {
+        DataCenter.instance.playStatNotifyStreamController
+            .add(PlayStatNotify(response.json));
       },
       onError: (error) => showToast(error.toString()),
     );
@@ -38,9 +47,15 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: DataCenter.instance.playingInfoResponseModelNotifier,
-      builder: (context, value, child) => _buildMusicBar(value),
+    return StreamBuilder(
+      stream: DataCenter.instance.playingInfoNotifyStreamController.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return _buildMusicBar(snapshot.data);
+        } else {
+          return _buildMusicBar(null);
+        }
+      },
     );
   }
 
@@ -105,12 +120,29 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.play_circle_outline_sharp,
-                          size: 30,
-                        ),
+                      StreamBuilder(
+                        stream: DataCenter
+                            .instance.playStatNotifyStreamController.stream,
+                        builder: (context, snapshot) {
+                          String playStat = "pause";
+                          if (snapshot.hasData) {
+                            playStat =
+                                (snapshot.data as PlayStatNotify).playStat;
+                            if (playStat == "playing")
+                              _controller?.repeat();
+                            else
+                              _controller?.stop();
+                          }
+                          return IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              playStat == "playing"
+                                  ? Icons.pause_circle_outline_sharp
+                                  : Icons.play_circle_outline_sharp,
+                              size: 30,
+                            ),
+                          );
+                        },
                       ),
                       IconButton(
                         onPressed: () {},

@@ -718,7 +718,7 @@ class HostApi {
   }
 
   //4.15.9获取当前播放状态
-  static GetPlayStat(
+  static getPlayStat(
       {void Function(PlayStatResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {};

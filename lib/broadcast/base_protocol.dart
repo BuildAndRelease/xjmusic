@@ -1,4 +1,5 @@
 class BaseProtocol {
+  Map json;
   String sendId;
   String recvId;
   String cmd;
@@ -8,6 +9,7 @@ class BaseProtocol {
 
   BaseProtocol(Map json) {
     if (json == null) return;
+    this.json = json;
     sendId = json["sendId"];
     recvId = json["recvId"];
     cmd = json["cmd"];

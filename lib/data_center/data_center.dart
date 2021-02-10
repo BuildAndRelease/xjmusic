@@ -3,6 +3,10 @@ import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:xj_music/broadcast/play_media_duration_notify.dart';
+import 'package:xj_music/broadcast/play_mode_notify.dart';
+import 'package:xj_music/broadcast/play_stat_notify.dart';
+import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/broadcast/search_host_notify.dart';
 import 'package:xj_music/data_center/socket.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
@@ -35,15 +39,21 @@ class DataCenter {
   GetHostRoomListResponseModel roomListResponseModel;
   // 当前房间信息
   GetHostRoomInfoResponseModel roomInfoResponseModel;
-  // 当前房间播放内容
-  ValueNotifier<GetPlayingInfoResponseModel> playingInfoResponseModelNotifier =
-      ValueNotifier(null);
 
   UDPSocket udpSocket;
 
   // 广播列表
   StreamController<SearchHostNotify> searchHostNotifyStreamController =
       StreamController<SearchHostNotify>.broadcast();
+  StreamController<PlayingInfoNotify> playingInfoNotifyStreamController =
+      StreamController<PlayingInfoNotify>.broadcast();
+  StreamController<PlayStatNotify> playStatNotifyStreamController =
+      StreamController<PlayStatNotify>.broadcast();
+  StreamController<PlayModeNotify> playModeNotifyStreamController =
+      StreamController<PlayModeNotify>.broadcast();
+  StreamController<PlayingMediaDurationNotify>
+      playingMediaDurationNotifyStreamController =
+      StreamController<PlayingMediaDurationNotify>.broadcast();
 
   DataCenter._internal() {
     _init();
@@ -87,8 +97,20 @@ class DataCenter {
       if (sendId == deviceUUID || direction == "request") return;
       switch (json['cmd'].toString()) {
         case "SearchHost":
-          final searchHostNotify = SearchHostNotify(json);
-          searchHostNotifyStreamController.add(searchHostNotify);
+          searchHostNotifyStreamController.add(SearchHostNotify(json));
+          break;
+        case "NotifyPlayingInfo":
+          playingInfoNotifyStreamController.add(PlayingInfoNotify(json));
+          break;
+        case "NotifyPlayMode":
+          playModeNotifyStreamController.add(PlayModeNotify(json));
+          break;
+        case "NotifyPlayingMediaDuration":
+          playingMediaDurationNotifyStreamController
+              .add(PlayingMediaDurationNotify(json));
+          break;
+        case "NotifyPlayStat":
+          playStatNotifyStreamController.add(PlayStatNotify(json));
           break;
       }
     }
