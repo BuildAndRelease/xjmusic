@@ -16,6 +16,7 @@ import 'package:xj_music/host_list/data_model/scene_id_response_model.dart';
 import 'package:xj_music/host_list/data_model/scene_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_default_download_path_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_room_serial_id_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/start_system_update_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
 import 'package:xj_music/host_list/data_model/system_ip_info_response_model.dart';
@@ -36,7 +37,9 @@ import 'download_music_list_response_model.dart';
 import 'get_delay_close_timer_response_model.dart';
 import 'downloaded_music_list_response_model.dart';
 import 'get_download_path_list_response_model.dart';
+import 'get_system_update_response_model.dart';
 import 'modify_delay_close_timer_response_model.dart';
+import 'music_volume_eq_response_model.dart';
 import 'timer_id_response_model.dart';
 import 'folder_response_model.dart';
 import 'add_favorite_play_list_response_model.dart';
@@ -2153,6 +2156,139 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.30清空所有配置文件
+  static clearAllRoomSetting(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("ClearAllRoomSetting", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.31.1获取音效均衡器
+  static getMusicVolumeEq(
+      {void Function(MusicVolumeEqResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetMusicVolumeEq", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(MusicVolumeEqResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.31.2设置音效均衡器
+  static setMusicVolumeEq(String eqType, Map musicVolumeEq,
+      {void Function(MusicVolumeEqResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"eqType": eqType, "musicVolumeEq": musicVolumeEq};
+    await DataCenter.instance.sendMsgToDevice("SetMusicVolumeEq", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(MusicVolumeEqResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.32系统重启
+  static restartSystem(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("RestartSystem", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.33重新搜索房间(用于重新获取房间列表)
+  static researchRoom(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("ResearchRoom", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.34.1获取系统升级信息
+  static getSystemUpdate(String updateType,
+      {void Function(GetSystemUpdateResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"updateType": updateType};
+    await DataCenter.instance.sendMsgToDevice("GetSystemUpdate", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetSystemUpdateResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.34.2开始升级
+  static startSystemUpdate(String updateType, String updateVersion,
+      {void Function(StartSystemUpdateResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"updateType": updateType, "updateVersion": updateVersion};
+    await DataCenter.instance.sendMsgToDevice("StartSystemUpdate", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(StartSystemUpdateResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
