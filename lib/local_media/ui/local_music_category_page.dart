@@ -8,14 +8,18 @@ class LocalMusicCategoryPage extends StatefulWidget {
 }
 
 class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
-  static const _listItem = ["外部存储", "内部存储", "下载"];
+  static const _listItem = [
+    "外部存储",
+    "内部存储",
+    "下载",
+  ];
 
   @override
   Widget build(BuildContext context) {
     return LocalMusicUIFrame(
         title: "本地音乐",
         subTitle: "根目录",
-        itemCount: () => 3,
+        itemCount: () => _listItem.length,
         widgetAtIndex: (context, index) => Column(
               mainAxisSize: MainAxisSize.min,
               children: [
