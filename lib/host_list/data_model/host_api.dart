@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/party_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_list_mode_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
@@ -32,6 +33,7 @@ import 'get_alum_set_favorite_list_response_model.dart';
 import 'get_favorite_media_response_model.dart';
 import 'get_scene_action_list_response_model.dart';
 import 'get_scene_list_response_model.dart';
+import 'get_system_usb_stat_response_model.dart';
 import 'media_src_response_model.dart';
 import 'get_dev_info_response_model.dart';
 import 'get_dev_stat_response_model.dart';
@@ -1345,7 +1347,7 @@ class HostApi {
   }
 
   //4.21.3新建场景带参数（动作）
-  static AddSceneWithAction(String sceneName, List list,
+  static addSceneWithAction(String sceneName, List list,
       {void Function(SceneResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"sceneName": sceneName, "list": list};
@@ -1450,6 +1452,63 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(GetSceneActionListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.22.1Usb/SD热拔插设备拔插状态获取
+  static getSystemUsbStat(
+      {void Function(GetSystemUsbStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetSystemUsbStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetSystemUsbStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.23.1打开/关闭party组
+  static setUniquePartyStat(String partyStat, String hostId,
+      {void Function(PartyStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"partyStat": partyStat, "hostId": hostId};
+    await DataCenter.instance.sendMsgToDevice("SetUniquePartyStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PartyStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.23.3获取party组状态
+  static getUniquePartyStat(
+      {void Function(PartyStatResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetUniquePartyStat", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PartyStatResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
