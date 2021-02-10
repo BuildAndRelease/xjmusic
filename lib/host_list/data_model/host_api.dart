@@ -14,6 +14,7 @@ import 'package:xj_music/host_list/data_model/result_code_response_model.dart';
 import 'package:xj_music/host_list/data_model/room_serial_id_response_model.dart';
 import 'package:xj_music/host_list/data_model/scene_id_response_model.dart';
 import 'package:xj_music/host_list/data_model/scene_response_model.dart';
+import 'package:xj_music/host_list/data_model/set_default_download_path_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_room_serial_id_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
@@ -28,9 +29,13 @@ import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
+import 'download_path_list_response_model.dart';
 import 'add_talk_response_model.dart';
 import 'del_talk_response_model.dart';
+import 'download_music_list_response_model.dart';
 import 'get_delay_close_timer_response_model.dart';
+import 'downloaded_music_list_response_model.dart';
+import 'get_download_path_list_response_model.dart';
 import 'modify_delay_close_timer_response_model.dart';
 import 'timer_id_response_model.dart';
 import 'folder_response_model.dart';
@@ -1996,6 +2001,158 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(ServerIpInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.1云资源下载
+  static downloadMusicList(String downloadPath, List mediaList,
+      {void Function(DownloadMusicListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"downloadPath": downloadPath, "mediaList": mediaList};
+    await DataCenter.instance.sendMsgToDevice("DownloadMusicList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DownloadMusicListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.3获取资源下载下载路径
+  static getDownloadPathList(
+      {void Function(GetDownloadPathListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetDownloadPathList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDownloadPathListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.4添加资源下载路径
+  static addDownloadPath(List downloadPathList,
+      {void Function(DownloadPathListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"downloadPathList": downloadPathList};
+    await DataCenter.instance.sendMsgToDevice("AddDownloadPath", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DownloadPathListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.5删除资源下载路径
+  static delDownloadPath(List downloadPathList,
+      {void Function(DownloadPathListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"downloadPathList": downloadPathList};
+    await DataCenter.instance.sendMsgToDevice("DelDownloadPath", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DownloadPathListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.6设置默认下载
+  static setDefaultDownloadPath(String defaultPath,
+      {void Function(SetDefaultDownloadPathResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"defaultPath": defaultPath};
+    await DataCenter.instance.sendMsgToDevice("SetDefaultDownloadPath", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SetDefaultDownloadPathResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.8获取已下载的列表
+  static getDownloadedMusicList(String mediaSrc,
+      {void Function(DownloadedMusicListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaSrc": mediaSrc};
+    await DataCenter.instance.sendMsgToDevice("GetDownloadedMusicList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DownloadedMusicListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.9获取正在下载的列表
+  static getDownloadingMusicList(String mediaSrc,
+      {void Function(DownloadedMusicListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaSrc": mediaSrc};
+    await DataCenter.instance.sendMsgToDevice("GetDownloadingMusicList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DownloadedMusicListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.29.10操作下载的列表
+  static operatoDownload(String cmd, List medialList,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"cmd": cmd, "medialList": medialList};
+    await DataCenter.instance.sendMsgToDevice("OperatoDownload", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
