@@ -4,7 +4,7 @@ import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/cloud_music/ui/room_main_cloudmusic_fragment.dart';
 import 'package:xj_music/local_media/ui/room_main_local_fragment.dart';
 import 'package:xj_music/net_radio/ui/room_main_netradio_fragment.dart';
-import 'package:xj_music/setting/room_main_setting_drawer.dart';
+import 'package:xj_music/main_page/room_main_setting_drawer.dart';
 import 'package:xj_music/story/ui/room_main_story_fragment.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
