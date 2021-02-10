@@ -17,6 +17,7 @@ import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
 import 'package:xj_music/host_list/data_model/talk_room_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/talk_stat_response_model.dart';
+import 'package:xj_music/host_list/data_model/timer_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
 import 'package:xj_music/host_list/data_model/volume_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
@@ -25,6 +26,9 @@ import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 
 import 'add_talk_response_model.dart';
 import 'del_talk_response_model.dart';
+import 'get_delay_close_timer_response_model.dart';
+import 'modify_delay_close_timer_response_model.dart';
+import 'timer_id_response_model.dart';
 import 'folder_response_model.dart';
 import 'add_favorite_play_list_response_model.dart';
 import 'audio_source_response_model.dart';
@@ -41,6 +45,7 @@ import 'get_scene_list_response_model.dart';
 import 'get_system_usb_stat_response_model.dart';
 import 'get_talk_list_response_model.dart';
 import 'get_talk_room_list_response_model.dart';
+import 'get_timer_list_response_model.dart';
 import 'media_src_response_model.dart';
 import 'get_dev_info_response_model.dart';
 import 'get_dev_stat_response_model.dart';
@@ -1525,7 +1530,7 @@ class HostApi {
   }
 
   //4.24.1获取对讲组列表
-  static GetTalkList(
+  static getTalkList(
       {void Function(GetTalkListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {};
@@ -1687,6 +1692,165 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(TalkStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.1获取定时器列表
+  static getTimerList(
+      {void Function(GetTimerListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetTimerList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetTimerListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.2添加定时器
+  static addTimer(String timerName, String timerEnable, String circleDay,
+      String actionName, String specialDate, String preSetTime, Map media,
+      {void Function(TimerResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "timerName": timerName,
+      "timerEnable": timerEnable,
+      "circleDay": circleDay,
+      "actionName": actionName,
+      "specialDate": specialDate,
+      "preSetTime": preSetTime,
+      "media": media
+    };
+    await DataCenter.instance.sendMsgToDevice("AddTimer", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TimerResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.4删除定时器
+  static delTimer(String timerId,
+      {void Function(TimerIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"timerId": timerId};
+    await DataCenter.instance.sendMsgToDevice("DelTimer", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TimerIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.5修改定时器
+  static modifyTimer(
+      String timerId,
+      String timerName,
+      String timerEnable,
+      String circleDay,
+      String actionName,
+      String specialDate,
+      String preSetTime,
+      Map media,
+      {void Function(TimerResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "timerId": timerId,
+      "timerName": timerName,
+      "timerEnable": timerEnable,
+      "circleDay": circleDay,
+      "actionName": actionName,
+      "specialDate": specialDate,
+      "preSetTime": preSetTime,
+      "media": media
+    };
+    await DataCenter.instance.sendMsgToDevice("ModifyTimer", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TimerResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.6关闭闹钟
+  static closeClockPlay(String timerId,
+      {void Function(TimerIdResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"timerId": timerId};
+    await DataCenter.instance.sendMsgToDevice("CloseClockPlay", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(TimerIdResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.9获取延时关机定时器
+  static getDelayCloseTimer(
+      {void Function(GetDelayCloseTimerResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetDelayCloseTimer", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDelayCloseTimerResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.25.10修改延时关机定时器
+  static modifyDelayCloseTimer(String delayCloseAfterTimes,
+      {void Function(ModifyDelayCloseTimerResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"delayCloseAfterTimes": delayCloseAfterTimes};
+    await DataCenter.instance.sendMsgToDevice("ModifyDelayCloseTimer", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ModifyDelayCloseTimerResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
