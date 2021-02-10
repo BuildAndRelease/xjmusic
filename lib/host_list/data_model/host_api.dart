@@ -1,9 +1,14 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
+import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
+import 'package:xj_music/host_list/data_model/play_current_play_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/play_list_mode_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_music_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_stat_response_model.dart';
+import 'package:xj_music/host_list/data_model/play_time_response_model%20copy.dart';
+import 'package:xj_music/host_list/data_model/result_code_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_date_response_model.dart';
 import 'package:xj_music/host_list/data_model/sys_time_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
@@ -15,9 +20,11 @@ import 'package:xj_music/host_list/data_model/set_dev_info_response_model.dart';
 import 'audio_source_response_model.dart';
 import 'aux_response_model.dart';
 import 'bass_response_model.dart';
+import 'del_history_play_list_response_model.dart';
 import 'get_dev_info_response_model.dart';
 import 'get_dev_stat_response_model.dart';
 import 'eq_response_model.dart';
+import 'get_history_play_list_response_model.dart';
 import 'get_playing_info_response_model.dart';
 import 'get_room_stat_info_response_model.dart';
 import 'mute_response_model.dart';
@@ -682,6 +689,238 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(PlayStatResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.16.1获取当前播放时间
+  static getPlayTime(
+      {void Function(PlayTimeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetPlayTime", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayTimeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.16.2设置当前播放时间
+  static setPlayTime(String playTime,
+      {void Function(PlayTimeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"playTime": playTime};
+    await DataCenter.instance.sendMsgToDevice("SetPlayTime", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayTimeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.1播放当前播放列表
+  static playCurrentPlayList(Map media,
+      {void Function(PlayCurrentPlayListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("PlayCurrentPlayList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayCurrentPlayListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.2获取当前播放列表
+  static getCurrentPlayList(String pageNum, String pageSize, String id,
+      {void Function(GetCurrentPlayListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pageNum": pageNum, "pageSize": pageSize, "id": id};
+    await DataCenter.instance.sendMsgToDevice("GetCurrentPlayList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetCurrentPlayListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.3设置当前播放列表的升序模式
+  static setPlayListMode(String isAsc,
+      {void Function(PlayListModeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"isAsc": isAsc};
+    await DataCenter.instance.sendMsgToDevice("SetPlayListMode", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayListModeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.4获取当前播放列表的升序模式
+  static getPlayListMode(
+      {void Function(PlayListModeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetPlayListMode", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(PlayListModeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.5从当前播放列表中删除媒体(批量操作)
+  static delMediaListFromPlayMediaList(List mediaList,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaList": mediaList};
+    await DataCenter.instance.sendMsgToDevice(
+        "DelMediaListFromPlayMediaList", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.6从当前播放列表中删除媒体(单个操作)
+  static delMediaFromPlayMediaList(Map media,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"media": media};
+    await DataCenter.instance.sendMsgToDevice("DelMediaFromPlayMediaList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.7清空当前播放列表
+  static clearPlayMediaList(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("ClearPlayMediaList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.8添加云音乐列表（目前仅支持云音乐）
+  static addToCloudMusicList(List mediaList,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaList": mediaList};
+    await DataCenter.instance.sendMsgToDevice("AddToCloudMusicList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.2获取当前播放列表
+  static getHistoryPlayList(String pageNum, String pageSize, String mediaSrc,
+      {void Function(GetHistoryPlayListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "pageNum": pageNum,
+      "pageSize": pageSize,
+      "mediaSrc": mediaSrc
+    };
+    await DataCenter.instance.sendMsgToDevice("GetHistoryPlayList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetHistoryPlayListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //4.17.10删除历史播放列表
+  static delHistoryPlayList(String mediaSrc, List mediaList,
+      {void Function(DelHistoryPlayListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"mediaSrc": mediaSrc, "mediaList": mediaList};
+    await DataCenter.instance.sendMsgToDevice("DelHistoryPlayList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(DelHistoryPlayListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
