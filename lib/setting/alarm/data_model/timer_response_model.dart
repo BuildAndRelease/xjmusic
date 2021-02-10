@@ -46,7 +46,7 @@ class TimerResponseModel extends BaseProtocol {
   }
 }
 
-class Timer {
+class AlarmTimer {
   String timerId;
   String timerName;
   String timerEnable;
@@ -59,7 +59,7 @@ class Timer {
   String clockTime;
   BasicMedia media;
 
-  Timer(
+  AlarmTimer(
       {this.timerId,
       this.timerName,
       this.timerEnable,
@@ -72,7 +72,7 @@ class Timer {
       this.clockTime,
       this.media});
 
-  Timer.fromJson(Map json) {
+  AlarmTimer.fromJson(Map json) {
     timerId = json['timerId'].toString();
     timerName = json['timerName'].toString();
     timerEnable = json['timerEnable'].toString();

@@ -1,9 +1,6 @@
-import 'package:xj_music/broadcast/base_protocol.dart';
+import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
 
 //4.12.3播放模式更改通知
-class PlayModeNotify extends BaseProtocol {
-  String playMode;
-  PlayModeNotify(Map json) : super(json) {
-    playMode = arg["playMode"].toString();
-  }
+class PlayModeNotify extends PlayModeResponseModel {
+  PlayModeNotify(Map json) : super(json);
 }
