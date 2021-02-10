@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
@@ -54,9 +53,7 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
             backgroundColor: Theme.of(context).primaryColor,
             centerTitle: true,
             expandedHeight: 204.0,
-            floating: false,
             pinned: true,
-            snap: false,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               background: _buildHeaderbackground(),
@@ -83,10 +80,11 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
         CachedNetworkImage(
           imageUrl:
               "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2279879648,475318368&fm=26&gp=0.jpg",
+          width: double.infinity,
           fit: BoxFit.fill,
         ),
         BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
             color: Colors.white.withOpacity(0.5),
           ),
