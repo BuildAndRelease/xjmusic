@@ -6,6 +6,7 @@ import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
+import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/avatar.dart';
 
@@ -17,6 +18,9 @@ class RoomMiniPlayerBar extends StatefulWidget {
 class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
     with TickerProviderStateMixin {
   AnimationController _controller;
+  PlayingInfoNotify _playingInfoNotify;
+  PlayStatNotify _playStatNotify;
+
   @override
   void initState() {
     _controller =
@@ -47,15 +51,22 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: DataCenter.instance.playingInfoNotifyStreamController.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return _buildMusicBar(snapshot.data);
-        } else {
-          return _buildMusicBar(null);
-        }
+    return GestureDetector(
+      onTap: () {
+        if (_playingInfoNotify.media.mediaSrc is! LocalAuxMedia)
+          Routes.pushRoomPlayerInfoPage(context);
       },
+      child: StreamBuilder(
+        stream: DataCenter.instance.playingInfoNotifyStreamController.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            _playingInfoNotify = snapshot.data;
+            return _buildMusicBar(_playingInfoNotify);
+          } else {
+            return _buildMusicBar(null);
+          }
+        },
+      ),
     );
   }
 
@@ -126,8 +137,8 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
                         builder: (context, snapshot) {
                           String playStat = "pause";
                           if (snapshot.hasData) {
-                            playStat =
-                                (snapshot.data as PlayStatNotify).playStat;
+                            _playStatNotify = snapshot.data;
+                            playStat = _playStatNotify.playStat;
                             if (playStat == "playing")
                               _controller?.repeat();
                             else

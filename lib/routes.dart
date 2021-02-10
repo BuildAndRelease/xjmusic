@@ -5,12 +5,14 @@ import 'package:xj_music/main_page/room_main_page.dart';
 
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
+import 'main_page/room_player_info_page.dart';
 import 'splash_page.dart';
 import 'util/custom_route.dart';
 import 'util/global.dart';
 
 const String homeRoute = "home";
 const String roomMainPageRoute = "roomMainPage";
+const String roomPlayInfoPageRoute = "roomPlayInfoPage";
 const String localMusicCategoryPageRoute = "localMusicCategoryPage";
 const String localMusicSubCategoryPageRoute = "localMusicSubCategoryPage";
 
@@ -59,6 +61,10 @@ class Routes {
 
   static Future pushRoomMainPage(BuildContext context) {
     return push(context, RoomMainPage(), roomMainPageRoute, fadeIn: true);
+  }
+
+  static Future pushRoomPlayerInfoPage(BuildContext context) {
+    return push(context, RoomPlayerInfoPage(), roomPlayInfoPageRoute);
   }
 
   static Future pushLocalMusicCategoryPage(BuildContext context) {
