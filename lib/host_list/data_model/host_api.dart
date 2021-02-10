@@ -2,7 +2,6 @@ import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
-import 'package:xj_music/host_list/data_model/play_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_list_mode_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_mode_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_result_response_model.dart';
