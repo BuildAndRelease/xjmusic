@@ -12,6 +12,7 @@ import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
+import 'package:xj_music/main_page/room_player_playlist_page.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/avatar.dart';
@@ -179,14 +180,18 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
         IconButton(
             icon: Icon(
               Icons.add,
-              color: Colors.white,
+              color: _playingInfoNotify.media is CloudMusicMedia
+                  ? Colors.white
+                  : Theme.of(context).disabledColor,
               size: 30,
             ),
             onPressed: () {}),
         IconButton(
             icon: Icon(
               Icons.file_download,
-              color: Colors.white,
+              color: _playingInfoNotify.media is CloudMusicMedia
+                  ? Colors.white
+                  : Theme.of(context).disabledColor,
               size: 30,
             ),
             onPressed: () {}),
@@ -307,7 +312,14 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
                 color: Colors.white,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return RoomPlayerPlayListPage();
+                  },
+                );
+              }),
         ),
       ],
     );

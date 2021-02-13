@@ -54,6 +54,7 @@ class GetPlayingInfoResponseModel extends BaseProtocol {
 
 abstract class BasicMedia {
   String mediaSrc;
+  Map<String, dynamic> toJson();
 }
 
 //云音乐媒体
