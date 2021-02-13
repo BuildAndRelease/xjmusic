@@ -67,6 +67,7 @@ class _RoomPlayerPlayListPageState extends State<RoomPlayerPlayListPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
+                  tileColor: Theme.of(context).backgroundColor,
                   leading: Text("$index"),
                   title: Text(
                     title,
@@ -88,7 +89,6 @@ class _RoomPlayerPlayListPageState extends State<RoomPlayerPlayListPage> {
               ],
             );
           },
-          itemExtent: 100.0,
           itemCount: _playListResponseModel?.mediaListCount ?? 0,
         ),
       ),

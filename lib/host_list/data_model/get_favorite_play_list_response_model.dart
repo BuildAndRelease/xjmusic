@@ -10,7 +10,7 @@ class GetFavoritePlayListResponseModel extends BaseProtocol {
     playLists = arg['playList'];
   }
 
-  get playListCount => playLists.length;
+  get playListCount => playLists?.length ?? 0;
 
   PlayList playListsAtIndex(int index) {
     PlayList playList = PlayList.fromJson(playLists[index]);
