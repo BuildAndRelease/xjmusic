@@ -22,26 +22,27 @@ class GetPlayingInfoResponseModel extends BaseProtocol {
         continue inNormal;
       inNormal:
       case "inNormal":
-        switch (arg["media"]["mediaSrc"]) {
-          case "cloudMusic":
-            media = CloudMusicMedia.fromJson(arg["media"]);
-            break;
-          case "cloudStoryTelling":
-            media = CloudStoryTellingMedia.fromJson(arg["media"]);
-            break;
-          case "localMusic":
-            media = LocalMusicMedia.fromJson(arg["media"]);
-            break;
-          case "localAux":
-            media = LocalAuxMedia.fromJson(arg["media"]);
-            break;
-          case "cloudNetFm":
-            media = CloudNetFmMedia.fromJson(arg["media"]);
-            break;
-          default:
-            media = null;
-            break;
-        }
+        if (arg.containsKey("media"))
+          switch (arg["media"]["mediaSrc"]) {
+            case "cloudMusic":
+              media = CloudMusicMedia.fromJson(arg["media"]);
+              break;
+            case "cloudStoryTelling":
+              media = CloudStoryTellingMedia.fromJson(arg["media"]);
+              break;
+            case "localMusic":
+              media = LocalMusicMedia.fromJson(arg["media"]);
+              break;
+            case "localAux":
+              media = LocalAuxMedia.fromJson(arg["media"]);
+              break;
+            case "cloudNetFm":
+              media = CloudNetFmMedia.fromJson(arg["media"]);
+              break;
+            default:
+              media = null;
+              break;
+          }
         break;
       case "inDlna":
         break;

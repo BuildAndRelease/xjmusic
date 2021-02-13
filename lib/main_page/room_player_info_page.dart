@@ -204,7 +204,19 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
                   : Theme.of(context).disabledColor,
               size: 30,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              HostApi.downloadMusicList(
+                "",
+                [_playingInfoNotify.media.toJson()],
+                onResponse: (response) {
+                  if (response.resultCode == "0")
+                    showToast("下载成功");
+                  else
+                    showToast("下载失败");
+                },
+                onError: (error) => showToast("下载失败"),
+              );
+            }),
         IconButton(
             icon: Icon(
               Icons.playlist_add_check,
