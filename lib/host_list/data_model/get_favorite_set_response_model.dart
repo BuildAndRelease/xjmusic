@@ -133,6 +133,7 @@ class CloudSingerSet extends BasicAlbumSet {
   String fsingerName;
   String fsort;
   String picUrl;
+  String type;
 
   CloudSingerSet(
       {albumSetTypeName,
@@ -143,7 +144,8 @@ class CloudSingerSet extends BasicAlbumSet {
       this.fsingerMid,
       this.fsingerName,
       this.fsort,
-      this.picUrl});
+      this.picUrl,
+      this.type});
 
   CloudSingerSet.fromJson(Map json) {
     albumSetTypeName = json['albumSetTypeName'].toString();
@@ -155,6 +157,7 @@ class CloudSingerSet extends BasicAlbumSet {
     fsingerName = json['Fsinger_name'].toString();
     fsort = json['Fsort'].toString();
     picUrl = json['pic_url'].toString();
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -168,6 +171,8 @@ class CloudSingerSet extends BasicAlbumSet {
     data['Fsinger_name'] = this.fsingerName;
     data['Fsort'] = this.fsort;
     data['pic_url'] = this.picUrl;
+    data['type'] = this.type;
+
     return data;
   }
 }

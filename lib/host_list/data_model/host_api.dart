@@ -11,6 +11,7 @@ import 'package:xj_music/host_list/data_model/play_time_response_model%20copy.da
 import 'package:xj_music/host_list/data_model/rename_favorite_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/result_code_response_model.dart';
 import 'package:xj_music/host_list/data_model/room_serial_id_response_model.dart';
+import 'package:xj_music/host_list/data_model/search_local_music_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_default_download_path_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
 import 'package:xj_music/host_list/data_model/volume_response_model.dart';
@@ -20,7 +21,20 @@ import 'package:xj_music/host_list/data_model/set_all_dev_stat_response_model.da
 import 'download_path_list_response_model.dart';
 import 'download_music_list_response_model.dart';
 import 'downloaded_music_list_response_model.dart';
+import 'get_album_response_model.dart';
+import 'get_category_diss_response_model.dart';
+import 'get_category_response_model.dart';
+import 'get_category_song_response_model.dart';
+import 'get_diss_category_response_model.dart';
+import 'get_diss_response_model.dart';
+import 'get_diss_song_response_model.dart';
 import 'get_download_path_list_response_model.dart';
+import 'get_local_directory_response_model.dart';
+import 'get_singer_album_response_model.dart';
+import 'get_singer_response_model.dart';
+import 'get_singer_song_response_model.dart';
+import 'get_top_list_response_model.dart';
+import 'get_top_list_song_response_model.dart';
 import 'music_volume_eq_response_model.dart';
 import 'folder_response_model.dart';
 import 'add_favorite_play_list_response_model.dart';
@@ -1467,6 +1481,455 @@ class HostApi {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
           onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.1获取指定目录的信息
+  static getLocalDirectory(
+      String directoryMid, String beginIndex, String num, String ignoreEmpty,
+      {void Function(GetLocalDirectoryResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "directoryMid": directoryMid,
+      "beginIndex": beginIndex,
+      "num": num,
+      "ignoreEmpty": ignoreEmpty
+    };
+    await DataCenter.instance.sendMsgToDevice("GetLocalDirectory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetLocalDirectoryResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.2搜索本地歌曲
+  static searchLocalMusic(String keywords, String beginIndex, String num,
+      {void Function(SearchLocalMusicResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"keywords": keywords, "beginIndex": beginIndex, "num": num};
+    await DataCenter.instance.sendMsgToDevice("SearchLocalMusic", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(SearchLocalMusicResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.3新建目录
+  static mkLocalDiskDir(String dest,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"dest": dest};
+    await DataCenter.instance.sendMsgToDevice("MkLocalDiskDir", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.4重命名目录
+  static moveLocalDiskDir(String source, String dest,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"source": source, "dest": dest};
+    await DataCenter.instance.sendMsgToDevice("MoveLocalDiskDir", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.5删除目录
+  static rmLocalDiskDir(List sourceList,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"sourceList": sourceList};
+    await DataCenter.instance.sendMsgToDevice("RmLocalDiskDir", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.6删除文件
+  static rmLocalDiskFile(List sourceList,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"sourceList": sourceList};
+    await DataCenter.instance.sendMsgToDevice("RmLocalDiskFile", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.1.6删除文件
+  static moveLocalDiskFile(String source,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"source": source};
+    await DataCenter.instance.sendMsgToDevice("MoveLocalDiskFile", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.1获取歌手
+  static getSinger(String category, String index, String pageNo,
+      {void Function(GetSingerResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"category": category, "index": index, "pageNo": pageNo};
+    await DataCenter.instance.sendMsgToDevice("GetSinger", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetSingerResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.2获取歌手的歌曲
+  static getSingerSong(
+      String begin, String order, String singerMid, String size,
+      {void Function(GetSingerSongResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "begin": begin,
+      "order": order,
+      "singerMid": singerMid,
+      "size": size
+    };
+    await DataCenter.instance.sendMsgToDevice("GetSingerSong", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetSingerSongResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.3获取歌手的专辑
+  static getSingerAlbum(
+      String begin, String order, String singerMid, String size,
+      {void Function(GetSingerAlbumResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "begin": begin,
+      "order": order,
+      "singerMid": singerMid,
+      "size": size
+    };
+    await DataCenter.instance.sendMsgToDevice("GetSingerAlbum", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetSingerAlbumResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.5获取排行榜
+  static getTopList(
+      {void Function(GetTopListResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetTopList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetTopListResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.6获取排行榜的歌曲
+  static getTopListSong(String topListDate, String topListId,
+      {void Function(GetTopListSongResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"topListDate": topListDate, "topListId": topListId};
+    await DataCenter.instance.sendMsgToDevice("GetTopListSong", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetTopListSongResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.7获取分类
+  static getCategory(
+      {void Function(GetCategoryResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetCategoryResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.8获取分类下的歌曲
+  static getCategorySong(
+      String categoryId, String pageNum, String perpage, String sort,
+      {void Function(GetCategorySongResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pageNum": pageNum,
+      "perpage": perpage,
+      "sort": sort
+    };
+    await DataCenter.instance.sendMsgToDevice("GetCategorySong", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetCategorySongResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.9获取分类下的歌单
+  static getCategoryDiss(
+      String categoryId, String pageNum, String perpage, String sort,
+      {void Function(GetCategoryDissResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pageNum": pageNum,
+      "perpage": perpage,
+      "sort": sort
+    };
+    await DataCenter.instance.sendMsgToDevice("GetCategoryDiss", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetCategoryDissResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.10获取分类下的专辑
+  static getCategoryAlbum(
+      String categoryId, String pageNum, String perpage, String sort,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pageNum": pageNum,
+      "perpage": perpage,
+      "sort": sort
+    };
+    await DataCenter.instance.sendMsgToDevice("GetCategoryAlbum", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.11获取歌单分类
+  static getDissCategory(
+      {void Function(GetDissCategoryResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetDissCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDissCategoryResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.12获取指定歌单分类下的歌单
+  static getDiss(String categoryId, String from, String sort, String to,
+      {void Function(GetDissResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "from": from,
+      "sort": sort,
+      "to": to
+    };
+    await DataCenter.instance.sendMsgToDevice("GetDiss", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDissResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.13获取歌单下的歌曲
+  static getDissSong(String dissId,
+      {void Function(GetDissSongResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"dissId": dissId};
+    await DataCenter.instance.sendMsgToDevice("GetDissSong", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetDissSongResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.14获取歌单的信息
+  static getDissInfo(String dissId,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"dissId": dissId};
+    await DataCenter.instance.sendMsgToDevice("GetDissInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.2.15获取专辑
+  static getAlbum(String area, String index, String pageNo, String perpage,
+      String sort, String time, String type,
+      {void Function(GetAlbumResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "area": area,
+      "index": index,
+      "pageNo": pageNo,
+      "perpage": perpage,
+      "sort": sort,
+      "time": time,
+      "type": type
+    };
+    await DataCenter.instance.sendMsgToDevice("GetAlbum", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetAlbumResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
