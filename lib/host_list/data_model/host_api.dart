@@ -17,6 +17,8 @@ import 'package:xj_music/host_list/data_model/search_lyric_response_model.dart';
 import 'package:xj_music/host_list/data_model/search_pre_view_response_model.dart';
 import 'package:xj_music/host_list/data_model/search_song_response_model.dart';
 import 'package:xj_music/host_list/data_model/set_default_download_path_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_story_telling_play_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/story_telling_response_model.dart';
 import 'package:xj_music/host_list/data_model/treble_response_model.dart';
 import 'package:xj_music/host_list/data_model/volume_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
@@ -42,6 +44,9 @@ import 'get_recommend_response_model.dart';
 import 'get_singer_album_response_model.dart';
 import 'get_singer_response_model.dart';
 import 'get_singer_song_response_model.dart';
+import 'get_story_telling_album_info_model.dart';
+import 'get_story_telling_category_response_model.dart';
+import 'get_story_telling_response_model .dart';
 import 'get_top_list_response_model.dart';
 import 'get_top_list_song_response_model.dart';
 import 'music_volume_eq_response_model.dart';
@@ -2143,6 +2148,522 @@ class HostApi {
       void Function(Error error) onError}) async {
     final arg = {"songMid ": songMid};
     await DataCenter.instance.sendMsgToDevice("GetSongLyric", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.1获取语言节目的分类
+  static getStorytellingCategory(
+      {void Function(GetStorytellingCategoryResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetStorytellingCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetStorytellingCategoryResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.2获取分类下的语言节目
+  static getStorytelling(String categoryId, String pagenum, String perpage,
+      {void Function(GetStorytellingResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pagenum": pagenum,
+      "perpage": perpage
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStorytelling", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetStorytellingResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.3获取语言节目的专辑信息（根据专辑ID）
+  static getStorytellingAlbumInfo(
+      String albumId, String pagenum, String perpage, String isAsc,
+      {void Function(GetStorytellingAlbumInfoResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "albumId": albumId,
+      "pagenum": pagenum,
+      "perpage": perpage,
+      "isAsc": isAsc
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStorytellingAlbumInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetStorytellingAlbumInfoResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.4获取语言节目的播放列表
+  static getStorytellingPlaylist(
+      String mediaId, String pagenum, String perpage, String isAsc,
+      {void Function(GetStorytellingPlaylistResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "mediaId": mediaId,
+      "pagenum": pagenum,
+      "perpage": perpage,
+      "isAsc": isAsc
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStorytellingPlaylist", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(GetStorytellingPlaylistResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.5获取语言节目的推荐
+  static getStorytellingPush(String pagenum, String perpage, String pushType,
+      {void Function(StorytellingResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pagenum": pagenum, "perpage": perpage, "pushType": pushType};
+    await DataCenter.instance.sendMsgToDevice("GetStorytellingPush", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(StorytellingResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.6搜索语言节目
+  static searchStorytelling(String pagenum, String perpage, String searchText,
+      {void Function(StorytellingResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "pagenum": pagenum,
+      "perpage": perpage,
+      "searchText": searchText
+    };
+    await DataCenter.instance.sendMsgToDevice("SearchStorytelling", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(StorytellingResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.7获取所有主播分类
+  static getStoryTellingAnchorCategory(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice(
+        "GetStoryTellingAnchorCategory", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.8获取分类下的主播
+  static getStoryTellingAnchor(
+      String categoryId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStoryTellingAnchor", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.9获取分类下的主播[Normal]
+  static getStoryTellingAnchorByNormal(String categoryName,
+      String recommendType, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryName": categoryName,
+      "recommendType": recommendType,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice(
+        "GetStoryTellingAnchorByNormal", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.10获取主播的专辑列表
+  static getStoryTellingAnchorAlbum(
+      String anchorId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "anchorId": anchorId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStoryTellingAnchorAlbum", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.11获取主播信息
+  static getStoryTellingAnchorInfo(String anchorId,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"anchorId": anchorId};
+    await DataCenter.instance.sendMsgToDevice("GetStoryTellingAnchorInfo", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.12获取主播的媒体列表
+  static getStoryTellingAnchorTrack(
+      String anchorId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "anchorId": anchorId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice("GetStoryTellingAnchorTrack", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.13获取所有榜单
+  static getStoryTellingRankingList(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetStoryTellingRankingList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.14获取榜单下的专辑
+  static getStoryTellingRankingListAlbum(
+      String rankingListId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "rankingListId": rankingListId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice(
+        "GetStoryTellingRankingListAlbum", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.15获取榜单下的主播
+  static getStoryTellingRankingListAnchor(
+      String rankingListId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "rankingListId": rankingListId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice(
+        "GetStoryTellingRankingListAnchor", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.3.16获取榜单下的媒体
+  static getStoryTellingRankingListTrack(
+      String rankingListId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "rankingListId": rankingListId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice(
+        "GetStoryTellingRankingListTrack", arg, onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.1获取所有电台分类
+  static getNetFmCategory(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetNetFmCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.2获取电台分类下的子电台分类
+  static getNetFmByCategory(String categoryId, String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {
+      "categoryId": categoryId,
+      "pageSize": pageSize,
+      "pageNum": pageNum
+    };
+    await DataCenter.instance.sendMsgToDevice("GetNetFmByCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.3获取电台排行榜
+  static getNetFmTopList(String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pageSize": pageSize, "pageNum": pageNum};
+    await DataCenter.instance.sendMsgToDevice("GetNetFmTopList", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.4获取本地电台的电台列表(经纬度方式)
+  static getProvinceCodeByLatLng(String latitude, String longitude,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"latitude": latitude, "longitude": longitude};
+    await DataCenter.instance.sendMsgToDevice("GetProvinceCodeByLatLng", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.5获取国家台的电台列表
+  static getNetFmNation(String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pageSize": pageSize, "pageNum": pageNum};
+    await DataCenter.instance.sendMsgToDevice("GetNetFmNation", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.6获取网络台的电台列表
+  static getNetFmNetwork(String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pageSize": pageSize, "pageNum": pageNum};
+    await DataCenter.instance.sendMsgToDevice("GetNetFmNetwork", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.7获取省市列表
+  static getProvinceCodeCategory(
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {};
+    await DataCenter.instance.sendMsgToDevice("GetProvinceCodeCategory", arg,
+        onResponse: (String reponse) {
+      try {
+        final json = convert.jsonDecode(reponse);
+        if (json != null && json is Map)
+          onResponse?.call(ResultCodeResponseModel(json));
+        else
+          onError?.call(StateError("json parse failed"));
+      } catch (e) {
+        onError?.call(e);
+      }
+    }, onError: onError);
+  }
+
+  //5.4.8获取省市台的电台列表
+  static getNetFmByCode(String pageSize, String pageNum,
+      {void Function(ResultCodeResponseModel response) onResponse,
+      void Function(Error error) onError}) async {
+    final arg = {"pageSize": pageSize, "pageNum": pageNum};
+    await DataCenter.instance.sendMsgToDevice("GetNetFmByCode", arg,
         onResponse: (String reponse) {
       try {
         final json = convert.jsonDecode(reponse);
