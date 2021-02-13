@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
+import 'package:xj_music/util/const.dart';
 
 class LocalMusicUIFrame extends StatefulWidget {
   final String title;
@@ -78,8 +79,7 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl:
-              "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2279879648,475318368&fm=26&gp=0.jpg",
+          imageUrl: defaultIcon,
           width: double.infinity,
           fit: BoxFit.fill,
         ),
@@ -100,8 +100,7 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CachedNetworkImage(
-                    imageUrl:
-                        "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2279879648,475318368&fm=26&gp=0.jpg",
+                    imageUrl: defaultIcon,
                     fit: BoxFit.cover,
                     width: 100,
                     height: 100,
