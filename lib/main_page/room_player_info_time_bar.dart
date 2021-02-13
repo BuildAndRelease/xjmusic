@@ -58,6 +58,9 @@ class _AudioProgressIndicatorState extends State<AudioProgressIndicator> {
                       child: Slider(
                         value: value,
                         onChanged: (value) {
+                          widget.progress.value = value;
+                        },
+                        onChangeEnd: (value) {
                           widget.progressOnChanged?.call(value);
                         },
                         activeColor: widget.activeColor,

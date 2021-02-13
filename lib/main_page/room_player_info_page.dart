@@ -19,6 +19,7 @@ import 'package:xj_music/util/avatar.dart';
 import 'package:xj_music/util/const.dart';
 
 import 'room_player_info_time_bar.dart';
+import 'room_player_volume_page.dart';
 
 class RoomPlayerInfoPage extends StatefulWidget {
   @override
@@ -165,6 +166,15 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
     );
   }
 
+  void _showVolumeBar() {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        title: RoomPlayerVolumePage(),
+      ),
+    );
+  }
+
   Widget _buildOperationBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -176,11 +186,11 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
               color: Colors.white,
               size: 30,
             ),
-            onPressed: () {}),
+            onPressed: () => _showVolumeBar()),
         IconButton(
             icon: Icon(
               Icons.add,
-              color: _playingInfoNotify.media is CloudMusicMedia
+              color: _playingInfoNotify?.media is CloudMusicMedia
                   ? Colors.white
                   : Theme.of(context).disabledColor,
               size: 30,
@@ -189,7 +199,7 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
         IconButton(
             icon: Icon(
               Icons.file_download,
-              color: _playingInfoNotify.media is CloudMusicMedia
+              color: _playingInfoNotify?.media is CloudMusicMedia
                   ? Colors.white
                   : Theme.of(context).disabledColor,
               size: 30,
