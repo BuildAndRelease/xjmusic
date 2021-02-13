@@ -25,7 +25,7 @@ class GetAlbumResponseModel extends BaseProtocol {
   get listCount => list.length;
 
   AlumItem listAtIndex(int index) {
-    return AlumItem.fromJson(list[index]);
+    return list[index];
   }
 }
 
