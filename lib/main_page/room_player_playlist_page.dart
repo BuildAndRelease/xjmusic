@@ -68,8 +68,16 @@ class _RoomPlayerPlayListPageState extends State<RoomPlayerPlayListPage> {
               children: [
                 ListTile(
                   leading: Text("$index"),
-                  title: Text(title),
-                  subtitle: Text(subTitle),
+                  title: Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  subtitle: Text(
+                    subTitle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                   onTap: () {
                     HostApi.playCurrentPlayList(media.toJson());
                   },

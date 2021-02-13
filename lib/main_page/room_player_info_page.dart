@@ -180,14 +180,18 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
         IconButton(
             icon: Icon(
               Icons.add,
-              color: Colors.white,
+              color: _playingInfoNotify.media is CloudMusicMedia
+                  ? Colors.white
+                  : Theme.of(context).disabledColor,
               size: 30,
             ),
             onPressed: () {}),
         IconButton(
             icon: Icon(
               Icons.file_download,
-              color: Colors.white,
+              color: _playingInfoNotify.media is CloudMusicMedia
+                  ? Colors.white
+                  : Theme.of(context).disabledColor,
               size: 30,
             ),
             onPressed: () {}),
