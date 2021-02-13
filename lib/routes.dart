@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
+import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
@@ -70,6 +71,10 @@ class Routes {
   static Future pushLocalMusicCategoryPage(BuildContext context) {
     return push(context, LocalMusicCategoryPage(), localMusicCategoryPageRoute,
         fadeIn: true);
+  }
+
+  static Future pushPlayListPage(BuildContext context) {
+    return push(context, RoomPlayerPlayListPage(), "roomPlayerPlayListPage");
   }
 
   static Future pushLocalMusicSubCategoryPage(BuildContext context,

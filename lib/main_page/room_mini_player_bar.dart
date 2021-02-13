@@ -11,6 +11,8 @@ import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/avatar.dart';
 import 'package:xj_music/util/const.dart';
 
+import 'room_player_playlist_page.dart';
+
 class RoomMiniPlayerBar extends StatefulWidget {
   @override
   _RoomMiniPlayerBarState createState() => _RoomMiniPlayerBarState();
@@ -156,7 +158,14 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
                         },
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return RoomPlayerPlayListPage();
+                            },
+                          );
+                        },
                         icon: Icon(
                           Icons.format_list_bulleted,
                           size: 30,
