@@ -9,6 +9,7 @@ import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/avatar.dart';
+import 'package:xj_music/util/const.dart';
 
 class RoomMiniPlayerBar extends StatefulWidget {
   @override
@@ -101,8 +102,7 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
     } else if (playingInfo?.media is LocalAuxMedia) {
       _isAux = true;
       title = "AUX";
-      imageUrl =
-          "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2279879648,475318368&fm=26&gp=0.jpg";
+      imageUrl = defaultIcon;
     }
     return Container(
       color: Theme.of(context).backgroundColor,

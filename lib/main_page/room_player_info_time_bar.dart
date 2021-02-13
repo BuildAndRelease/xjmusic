@@ -46,7 +46,7 @@ class _AudioProgressIndicatorState extends State<AudioProgressIndicator> {
             },
           ),
           SizedBox(
-            width: windowWidth - 100,
+            width: windowWidth - 110,
             child: ValueListenableBuilder(
                 valueListenable: widget.progress,
                 builder: (context, value, child) {
