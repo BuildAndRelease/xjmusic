@@ -10,17 +10,17 @@ class GetAlbumResponseModel extends BaseProtocol {
   String total;
 
   GetAlbumResponseModel(Map json) : super(json) {
-    if (json['list'] != null) {
+    if (arg['list'] != null) {
       list = <AlumItem>[];
       json['list'].forEach((v) {
         list.add(new AlumItem.fromJson(v));
       });
     }
-    order = json['order'].toString();
-    pageNum = json['pageNum'].toString();
-    perPage = json['per_page'].toString();
-    resultCode = json['resultCode'].toString();
-    total = json['total'].toString();
+    order = arg['order'].toString();
+    pageNum = arg['pageNum'].toString();
+    perPage = arg['per_page'].toString();
+    resultCode = arg['resultCode'].toString();
+    total = arg['total'].toString();
   }
   get listCount => list.length;
 
