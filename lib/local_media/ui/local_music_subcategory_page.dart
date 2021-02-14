@@ -100,7 +100,9 @@ class _LocalMusicSubCategoryPageState extends State<LocalMusicSubCategoryPage> {
                         (media as LocalMusicMedia).songName,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        HostApi.playLocalMusic(media.toJson());
+                      },
                     ),
                     Divider(
                       height: 0.5,

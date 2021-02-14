@@ -10,7 +10,7 @@ class GetFavoriteSetResponseModel extends BaseProtocol {
     list = arg['list'];
   }
 
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
 
   BasicAlbumSet listAtIndex(int index) {
     BasicAlbumSet basicAlbumSet;

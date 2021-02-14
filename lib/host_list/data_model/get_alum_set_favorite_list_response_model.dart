@@ -10,7 +10,7 @@ class GetAlbumSetFavoriteListResponseModel extends BaseProtocol {
     albumSetFolderList = arg['albumSetFolderList'];
   }
 
-  get albumSetFolderListCount => albumSetFolderList.length;
+  get albumSetFolderListCount => albumSetFolderList?.length ?? 0;
 
   Folder albumSetFolderListAtIndex(int index) {
     return Folder.fromJson(albumSetFolderList[index]);

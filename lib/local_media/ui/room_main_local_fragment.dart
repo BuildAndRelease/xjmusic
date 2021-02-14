@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/routes.dart';
 
 class RoomMainLocalFragment extends StatefulWidget {
@@ -89,6 +91,7 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
           ),
           tileColor: Theme.of(context).bottomAppBarColor,
           trailing: Icon(Icons.chevron_right),
+          onTap: () => Routes.pushAlbumFavoriteSetListPage(context),
         ),
         Divider(height: 0.5),
         ListTile(
@@ -100,6 +103,19 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
             "AUX",
             style: Theme.of(context).textTheme.bodyText1,
           ),
+          onTap: () {
+            HostApi.switchToAux(
+              "1",
+              onError: (error) => showToast("Aux切换失败"),
+              onResponse: (response) {
+                if (response.resultCode == "0") {
+                  showToast("已切换到Aux模式");
+                } else {
+                  showToast("Aux切换失败");
+                }
+              },
+            );
+          },
         ),
         Divider(height: 0.5),
         Divider(height: 8, color: Colors.transparent),

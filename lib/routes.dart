@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
 import 'host_list/ui/host_list.dart';
+import 'local_media/ui/local_album_favorite_list_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
 import 'splash_page.dart';
@@ -75,6 +77,17 @@ class Routes {
 
   static Future pushPlayListPage(BuildContext context) {
     return push(context, RoomPlayerPlayListPage(), "roomPlayerPlayListPage");
+  }
+
+  static Future pushAlbumFavoriteSetListPage(BuildContext context) {
+    return push(
+        context, LocalAlbumFavoriteListPage(), "localAlbumFavoriteSetListPage");
+  }
+
+  static Future pushAlbumFavoriteSetInfoPage(
+      BuildContext context, String albumSetId) {
+    return push(context, LocalAlbumFavoriteInfoPage(albumSetId),
+        "localAlbumFavoriteSetInfoPage");
   }
 
   static Future pushLocalMusicSubCategoryPage(BuildContext context,

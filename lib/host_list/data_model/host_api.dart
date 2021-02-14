@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_favorite_set_response_model.dart';
 import 'package:xj_music/host_list/data_model/party_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_list_mode_response_model.dart';
@@ -528,7 +529,7 @@ class HostApi {
   }
 
   //4.15.6切换到Aux
-  static SwitchToAux(String auxId,
+  static switchToAux(String auxId,
       {void Function(AuxResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"auxId": auxId};
@@ -1143,16 +1144,19 @@ class HostApi {
   }
 
   //4.20.13获取指定的专辑收藏夹中专辑列表
-  static getFavoriteSet(String folderId, String albumTypeName,
-      {void Function(FolderIdResponseModel response) onResponse,
+  static getFavoriteSet(String folderId,
+      {String albumTypeName,
+      void Function(GetFavoriteSetResponseModel response) onResponse,
       void Function(Error error) onError}) async {
-    final arg = {"folderId": folderId, "albumTypeName": albumTypeName};
+    final arg = {"folderId": folderId};
+    if (albumTypeName?.isNotEmpty ?? false)
+      arg["albumTypeName"] = albumTypeName;
     await DataCenter.instance.sendMsgToDevice("GetFavoriteSet", arg,
         onResponse: (String reponse) {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(FolderIdResponseModel(json));
+          onResponse?.call(GetFavoriteSetResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
