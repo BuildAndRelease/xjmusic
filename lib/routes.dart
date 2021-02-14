@@ -7,6 +7,7 @@ import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
+import 'local_media/ui/local_music_recent_play_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
 import 'splash_page.dart';
@@ -95,6 +96,11 @@ class Routes {
     return push(context, LocalMusicSubCategoryPage(dir, head, title, subTitle),
         localMusicSubCategoryPageRoute,
         fadeIn: true);
+  }
+
+  static Future pushRecentPlayPage(BuildContext context) {
+    return push(
+        context, LocalMusicRecentPlayPage(), "localMusicRecentPlayPage");
   }
 
   static void backHome() {

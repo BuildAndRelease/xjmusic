@@ -28,6 +28,12 @@ class _RoomMainPageState extends State<RoomMainPage>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _setupTabViews();
     return Scaffold(

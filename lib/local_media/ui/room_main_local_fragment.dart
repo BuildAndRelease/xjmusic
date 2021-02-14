@@ -57,6 +57,9 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
           ),
           tileColor: Theme.of(context).bottomAppBarColor,
           trailing: Icon(Icons.chevron_right),
+          onTap: () {
+            Routes.pushRecentPlayPage(context);
+          },
         ),
         Divider(height: 0.5),
         InkWell(
