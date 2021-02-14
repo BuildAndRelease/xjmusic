@@ -50,13 +50,10 @@ class _LocalMusicSubCategoryPageState extends State<LocalMusicSubCategoryPage> {
             headTitle: widget.head,
             title: widget.title,
             subTitle: widget.subTitle,
-            itemCount: () =>
-                _musicListModel.value.directoryListCount +
-                _musicListModel.value.mediaListCount,
+            itemCount: () => value.directoryListCount + value.mediaListCount,
             widgetAtIndex: (context, index) {
-              if (index < _musicListModel.value.directoryListCount) {
-                final directory =
-                    _musicListModel.value.directoryListAtIndex(index);
+              if (index < value.directoryListCount) {
+                final directory = value.directoryListAtIndex(index);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -80,8 +77,8 @@ class _LocalMusicSubCategoryPageState extends State<LocalMusicSubCategoryPage> {
                   ],
                 );
               } else {
-                final media = _musicListModel.value.mediaListAtIndex(
-                    index - _musicListModel.value.directoryListCount);
+                final media =
+                    value.mediaListAtIndex(index - value.directoryListCount);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
