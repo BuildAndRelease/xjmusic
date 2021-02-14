@@ -17,8 +17,9 @@ class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return LocalMusicUIFrame(
-        title: "本地音乐",
-        subTitle: "根目录",
+        headTitle: "本地音乐",
+        title: "根目录",
+        subTitle: "",
         itemCount: () => _listItem.length,
         widgetAtIndex: (context, index) => Column(
               mainAxisSize: MainAxisSize.min,
@@ -32,14 +33,25 @@ class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
                   onTap: () {
                     switch (index) {
                       case 0:
-                        Routes.pushLocalMusicSubCategoryPage(context, dir: "/");
+                        Routes.pushLocalMusicSubCategoryPage(context,
+                            dir: "/storage/sdcard1",
+                            head: "本地音乐",
+                            title: "外部存储",
+                            subTitle: "");
                         break;
                       case 1:
-                        Routes.pushLocalMusicSubCategoryPage(context, dir: "/");
+                        Routes.pushLocalMusicSubCategoryPage(context,
+                            dir: "/sdcard/InternalStorage/common",
+                            head: "本地音乐",
+                            title: "内部存储",
+                            subTitle: "");
                         break;
                       case 2:
                         Routes.pushLocalMusicSubCategoryPage(context,
-                            dir: "/Download");
+                            dir: "/sdcard/InternalStorage/download",
+                            head: "本地音乐",
+                            title: "我的下载",
+                            subTitle: "");
                         break;
                     }
                   },

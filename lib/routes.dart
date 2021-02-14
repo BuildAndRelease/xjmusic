@@ -78,9 +78,9 @@ class Routes {
   }
 
   static Future pushLocalMusicSubCategoryPage(BuildContext context,
-      {String dir = "/"}) {
-    return push(
-        context, LocalMusicSubCategoryPage(dir), localMusicSubCategoryPageRoute,
+      {String dir = "/", String head, String title, String subTitle}) {
+    return push(context, LocalMusicSubCategoryPage(dir, head, title, subTitle),
+        localMusicSubCategoryPageRoute,
         fadeIn: true);
   }
 

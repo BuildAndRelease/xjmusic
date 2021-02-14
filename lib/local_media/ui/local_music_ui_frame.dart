@@ -2,26 +2,35 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/const.dart';
 
 class LocalMusicUIFrame extends StatefulWidget {
+  final String headTitle;
   final String title;
   final String subTitle;
   final bool playBtnEnable;
   final bool addBtnEnable;
   final bool multiSelectBtnEnable;
+  final Function() onPlayAll;
+  final Function() onAddCollection;
+  final Function() onMultiSelect;
   final int Function() itemCount;
   final Widget Function(BuildContext context, int index) widgetAtIndex;
 
   const LocalMusicUIFrame(
-      {this.title,
+      {this.headTitle,
+      this.title,
       this.subTitle,
       this.playBtnEnable = false,
       this.addBtnEnable = false,
       this.multiSelectBtnEnable = false,
+      this.onPlayAll,
+      this.onMultiSelect,
+      this.onAddCollection,
       @required this.itemCount,
       @required this.widgetAtIndex});
 
@@ -31,16 +40,21 @@ class LocalMusicUIFrame extends StatefulWidget {
 
 class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             title: Text(
-              widget.title ?? "",
+              widget.headTitle ?? "",
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1
+                  .bodyText2
                   .copyWith(color: Colors.white),
             ),
             leading: IconButton(
@@ -86,7 +100,7 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.black.withOpacity(0.2),
           ),
         ),
         Container(
@@ -106,12 +120,26 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
                     height: 100,
                   ),
                   sizeWidth16,
-                  Text(
-                    widget.subTitle ?? "",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(color: Colors.white),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title ?? "",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(color: Colors.white),
+                      ),
+                      Text(
+                        widget.subTitle ?? "",
+                        maxLines: 3,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(color: Colors.white),
+                      )
+                    ],
                   )
                 ],
               ),
@@ -120,7 +148,8 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () =>
+                        widget.playBtnEnable ? widget.onPlayAll?.call() : null,
                     icon: Icon(
                       Icons.play_circle_outline_sharp,
                       size: 30,
@@ -129,7 +158,9 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => widget.addBtnEnable
+                        ? widget.onAddCollection?.call()
+                        : null,
                     icon: Icon(
                       Icons.add,
                       size: 30,
@@ -141,7 +172,9 @@ class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
                     child: Text(""),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => widget.multiSelectBtnEnable
+                        ? widget.onMultiSelect?.call()
+                        : null,
                     icon: Icon(
                       Icons.playlist_add_check_outlined,
                       size: 30,

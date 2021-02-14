@@ -19,8 +19,8 @@ class GetLocalDirectoryResponseModel extends BaseProtocol {
     directoryList = arg['directoryList'];
     mediaList = arg['mediaList'];
   }
-  get directoryListCount => directoryList.length;
-  get mediaListCount => mediaList.length;
+  get directoryListCount => directoryList?.length ?? 0;
+  get mediaListCount => mediaList?.length ?? 0;
 
   Node directoryListAtIndex(int index) {
     return Node.fromJson(directoryList[index]);
@@ -30,19 +30,19 @@ class GetLocalDirectoryResponseModel extends BaseProtocol {
     BasicMedia media;
     switch (mediaList[index]["mediaSrc"]) {
       case "cloudMusic":
-        media = CloudMusicMedia.fromJson(arg["media"]);
+        media = CloudMusicMedia.fromJson(mediaList[index]);
         break;
       case "cloudStoryTelling":
-        media = CloudStoryTellingMedia.fromJson(arg["media"]);
+        media = CloudStoryTellingMedia.fromJson(mediaList[index]);
         break;
       case "localMusic":
-        media = LocalMusicMedia.fromJson(arg["media"]);
+        media = LocalMusicMedia.fromJson(mediaList[index]);
         break;
       case "localAux":
-        media = LocalAuxMedia.fromJson(arg["media"]);
+        media = LocalAuxMedia.fromJson(mediaList[index]);
         break;
       case "cloudNetFm":
-        media = CloudNetFmMedia.fromJson(arg["media"]);
+        media = CloudNetFmMedia.fromJson(mediaList[index]);
         break;
       default:
         media = null;

@@ -95,7 +95,7 @@ class _RoomMiniPlayerBarState extends State<RoomMiniPlayerBar>
       final media = (playingInfo.media as LocalMusicMedia);
       title = media.songName;
       subTitle = "本地音乐";
-      imageUrl = media.picUrl;
+      imageUrl = defaultIcon;
     } else if (playingInfo?.media is CloudNetFmMedia) {
       final media = (playingInfo.media as CloudNetFmMedia);
       title = media.name;

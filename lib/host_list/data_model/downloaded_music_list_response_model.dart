@@ -13,7 +13,7 @@ class DownloadedMusicListResponseModel extends BaseProtocol {
     medialList = arg['medialList'];
   }
 
-  get medialListCount => medialList.length;
+  get medialListCount => medialList?.length ?? 0;
 
   DownloadItem medialListAtIndex(int index) {
     return DownloadItem.fromJson(medialList[index]);

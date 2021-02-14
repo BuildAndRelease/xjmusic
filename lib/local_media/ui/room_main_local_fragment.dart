@@ -60,7 +60,13 @@ class _RoomMainLocalFragmentState extends State<RoomMainLocalFragment> {
         InkWell(
           focusColor: Colors.grey,
           child: ListTile(
-            onTap: () {},
+            onTap: () {
+              Routes.pushLocalMusicSubCategoryPage(context,
+                  dir: "/sdcard/InternalStorage/download",
+                  head: "本地音乐",
+                  title: "我的下载",
+                  subTitle: "");
+            },
             leading: Icon(
               Icons.file_download,
             ),
