@@ -10,7 +10,7 @@ class GetSceneListResponseModel extends BaseProtocol {
     sceneList = arg['sceneList'];
   }
 
-  get sceneListCount => sceneList.length;
+  get sceneListCount => sceneList?.length ?? 0;
 
   MusicScene sceneListAtIndex(int index) {
     MusicScene musicScene = MusicScene.fromJson(sceneList[index]);

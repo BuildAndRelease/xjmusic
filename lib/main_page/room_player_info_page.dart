@@ -6,14 +6,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:tuple/tuple.dart';
+import 'package:xj_music/broadcast/play_media_duration_notify.dart';
 import 'package:xj_music/broadcast/play_mode_notify.dart';
 import 'package:xj_music/broadcast/play_stat_notify.dart';
+import 'package:xj_music/broadcast/play_time_notify.dart';
 import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/main_page/room_player_collection_select_page.dart';
+import 'package:xj_music/main_page/room_player_delay_timer_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
+import 'package:xj_music/main_page/room_player_scene_list_page.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/avatar.dart';
@@ -33,13 +37,14 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
   PlayingInfoNotify _playingInfoNotify;
   PlayModeNotify _playModeNotify;
   PlayStatNotify _playStatNotify;
-  ValueNotifier<Duration> _duration =
-      ValueNotifier(const Duration(seconds: 240));
+  ValueNotifier<double> _duration = ValueNotifier(240);
   ValueNotifier<double> _process = ValueNotifier(0);
   Timer _countPlayTimer;
   int _playTime = 0;
 
   StreamSubscription _playStatSubscription;
+  StreamSubscription _playDurationSubScription;
+  StreamSubscription _playTimeSubScription;
 
   @override
   void initState() {
@@ -48,6 +53,12 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
     _playStatSubscription = DataCenter
         .instance.playStatNotifyStreamController.stream
         .listen(_onPlayStatChanged);
+    _playDurationSubScription = DataCenter
+        .instance.playingMediaDurationNotifyStreamController.stream
+        .listen(_onDurationChanged);
+    _playTimeSubScription = DataCenter
+        .instance.playTimerNotifyStreamController.stream
+        .listen(_onPlayTimeChanged);
     HostApi.getPlayingInfo(
       onResponse: (response) {
         _playingInfoNotify = PlayingInfoNotify(response.json);
@@ -83,7 +94,17 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
   void dispose() {
     _controller.dispose();
     _playStatSubscription.cancel();
+    _playDurationSubScription.cancel();
+    _playTimeSubScription.cancel();
     super.dispose();
+  }
+
+  void _onDurationChanged(PlayingMediaDurationNotify durationNotify) {
+    _duration.value = double.tryParse(durationNotify.duration) ?? "240";
+  }
+
+  void _onPlayTimeChanged(PlayTimeNotify playTimeNotify) {
+    _playTime = int.tryParse(playTimeNotify.playTime) ?? 0;
   }
 
   void _onPlayStatChanged(PlayStatNotify statNotify) {
@@ -106,7 +127,7 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
           if (snapshot.hasData) {
             _playingInfoNotify = snapshot.data;
             _controller.stop();
-            _playTime = 0;
+            // _playTime = 0;
             _process.value = 0;
           }
           final playingInfo = _parsePlayingInfo(_playingInfoNotify);
@@ -231,14 +252,28 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
               color: Colors.white,
               size: 30,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return RoomPlayerSceneListPage();
+                },
+              );
+            }),
         IconButton(
             icon: Icon(
               Icons.alarm,
               color: Colors.white,
               size: 30,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return RoomPlayerDelayTimerPage();
+                },
+              );
+            }),
       ],
     );
   }
@@ -303,6 +338,10 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
             stream: DataCenter.instance.playStatNotifyStreamController.stream,
             builder: (context, snapshot) {
               if (snapshot.hasData) _playStatNotify = snapshot.data;
+              if (_playStatNotify?.playStat == "playing")
+                _controller.repeat();
+              else
+                _controller.stop();
               return IconButton(
                   icon: Icon(
                     _playStatNotify?.playStat == "playing"
@@ -363,7 +402,7 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
   };
 
   Widget _buildTimeBar(String duration) {
-    _duration.value = Duration(seconds: int.tryParse(duration) ?? 240);
+    _duration.value = double.tryParse(duration) ?? 240;
     return AudioProgressIndicator(
       _process,
       height: 90,
@@ -372,6 +411,13 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
       inactiveColor: Colors.white60,
       progressOnChanged: (progress) {
         if (progress <= 1.0 && progress <= 0.0) _process.value = progress;
+        HostApi.setPlayTime(
+          "${progress * _duration.value}",
+          onError: (error) => showToast("设置播放时间失败"),
+          onResponse: (response) {
+            if (response.resultCode != "0") showToast("设置播放时间失败");
+          },
+        );
       },
     );
   }
@@ -484,7 +530,7 @@ class _RoomPlayerInfoPageState extends State<RoomPlayerInfoPage>
     _stopCountPlayTime();
     _countPlayTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _playTime++;
-      final duration = _duration.value.inMicroseconds / (1000 * 1000);
+      final duration = _duration.value;
       final process = _playTime / duration;
       if (process >= 0.0 && process <= 1.0) _process.value = process;
     });

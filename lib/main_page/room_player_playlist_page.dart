@@ -58,6 +58,7 @@ class _RoomPlayerPlayListPageState extends State<RoomPlayerPlayListPage> {
               }
             } else if (media is LocalMusicMedia) {
               title = media.songName;
+              subTitle = "本地音乐";
             } else if (media is CloudStoryTellingMedia) {
               title = media.sectionName;
               subTitle = media.anchorName;

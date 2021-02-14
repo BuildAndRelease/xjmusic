@@ -3,7 +3,7 @@ import 'package:xj_music/util/utils.dart';
 
 class AudioProgressIndicator extends StatefulWidget {
   final ValueNotifier<double> progress;
-  final ValueNotifier<Duration> duration;
+  final ValueNotifier<double> duration;
   final double progressHeight;
   final double height;
   final double width;
@@ -39,8 +39,7 @@ class _AudioProgressIndicatorState extends State<AudioProgressIndicator> {
             valueListenable: widget.progress,
             builder: (context, value, child) {
               return Text(
-                formatCountdownTime(
-                    (value * widget.duration.value.inSeconds).toInt()),
+                formatCountdownTime((value * widget.duration.value).toInt()),
                 style: textStyle,
               );
             },
@@ -72,7 +71,7 @@ class _AudioProgressIndicatorState extends State<AudioProgressIndicator> {
             valueListenable: widget.duration,
             builder: (context, value, child) {
               return Text(
-                formatCountdownTime(value.inSeconds),
+                formatCountdownTime(widget.duration.value.toInt()),
                 style: textStyle,
               );
             },

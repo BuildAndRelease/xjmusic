@@ -3,11 +3,14 @@ import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:xj_music/broadcast/modify_delay_close_timer_notify.dart';
 import 'package:xj_music/broadcast/play_media_duration_notify.dart';
 import 'package:xj_music/broadcast/play_mode_notify.dart';
 import 'package:xj_music/broadcast/play_stat_notify.dart';
+import 'package:xj_music/broadcast/play_time_notify.dart';
 import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/broadcast/search_host_notify.dart';
+import 'package:xj_music/broadcast/volume_notify.dart';
 import 'package:xj_music/data_center/socket.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
@@ -54,6 +57,14 @@ class DataCenter {
   StreamController<PlayingMediaDurationNotify>
       playingMediaDurationNotifyStreamController =
       StreamController<PlayingMediaDurationNotify>.broadcast();
+
+  StreamController<VolumeNotify> volumeNotifyStreamController =
+      StreamController<VolumeNotify>.broadcast();
+  StreamController<ModifyDelayCloseTimerNotify>
+      delayTimerNotifyStreamController =
+      StreamController<ModifyDelayCloseTimerNotify>.broadcast();
+  StreamController<PlayTimeNotify> playTimerNotifyStreamController =
+      StreamController<PlayTimeNotify>.broadcast();
 
   DataCenter._internal() {
     _init();
@@ -111,6 +122,16 @@ class DataCenter {
           break;
         case "NotifyPlayStat":
           playStatNotifyStreamController.add(PlayStatNotify(json));
+          break;
+        case "NotifyModifyDelayCloseTimer":
+          delayTimerNotifyStreamController
+              .add(ModifyDelayCloseTimerNotify(json));
+          break;
+        case "NotifyVolume":
+          volumeNotifyStreamController.add(VolumeNotify(json));
+          break;
+        case "NotifyPlayTime":
+          playTimerNotifyStreamController.add(PlayTimeNotify(json));
           break;
       }
     }
