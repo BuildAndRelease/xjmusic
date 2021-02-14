@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/local_media/ui/local_music_ui_frame.dart';
 import 'package:xj_music/routes.dart';
 
@@ -13,6 +14,14 @@ class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
     "内部存储",
     "下载",
   ];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +29,9 @@ class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
         headTitle: "本地音乐",
         title: "根目录",
         subTitle: "",
+        refreshEnable: false,
+        loadMoreEnable: false,
+        refreshController: _refreshController,
         itemCount: () => _listItem.length,
         widgetAtIndex: (context, index) => Column(
               mainAxisSize: MainAxisSize.min,

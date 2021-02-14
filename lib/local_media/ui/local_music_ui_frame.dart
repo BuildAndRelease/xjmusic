@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
@@ -18,7 +19,13 @@ class LocalMusicUIFrame extends StatefulWidget {
   final Function() onAddCollection;
   final Function() onMultiSelect;
   final int Function() itemCount;
+  final double itemHeight;
   final Widget Function(BuildContext context, int index) widgetAtIndex;
+  final bool refreshEnable;
+  final bool loadMoreEnable;
+  final void Function() onRefresh;
+  final void Function() onLoadMore;
+  final RefreshController refreshController;
 
   const LocalMusicUIFrame(
       {this.headTitle,
@@ -30,8 +37,14 @@ class LocalMusicUIFrame extends StatefulWidget {
       this.onPlayAll,
       this.onMultiSelect,
       this.onAddCollection,
+      this.itemHeight,
       @required this.itemCount,
-      @required this.widgetAtIndex});
+      @required this.widgetAtIndex,
+      this.loadMoreEnable,
+      this.onLoadMore,
+      this.refreshEnable,
+      this.onRefresh,
+      @required this.refreshController});
 
   @override
   _LocalMusicUIFrameState createState() => _LocalMusicUIFrameState();
@@ -39,50 +52,51 @@ class LocalMusicUIFrame extends StatefulWidget {
 
 class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            title: Text(
-              widget.headTitle ?? "",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(color: Colors.white),
-            ),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              iconSize: 24,
-              color: Colors.white,
-              onPressed: () {
-                Routes.pop(context);
-              },
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            centerTitle: true,
-            expandedHeight: 204.0,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.pin,
-              background: _buildHeaderbackground(),
-            ),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: Text(
+                widget.headTitle ?? "",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(color: Colors.white),
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                iconSize: 24,
+                color: Colors.white,
+                onPressed: () {
+                  Routes.pop(context);
+                },
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              centerTitle: true,
+              expandedHeight: 204.0,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.pin,
+                background: _buildHeaderbackground(),
+              ),
+            )
+          ];
+        },
+        body: SmartRefresher(
+          enablePullDown: widget.refreshEnable,
+          enablePullUp: widget.loadMoreEnable,
+          controller: widget.refreshController,
+          onRefresh: widget.onRefresh?.call,
+          onLoading: widget.onLoadMore?.call,
+          child: ListView.builder(
+            itemExtent: widget.itemHeight,
+            itemCount: widget.itemCount?.call() ?? 0,
+            itemBuilder: (context, index) =>
+                widget.widgetAtIndex?.call(context, index) ?? const SizedBox(),
           ),
-          SliverFixedExtentList(
-            itemExtent: 56.5,
-            delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-                  widget.widgetAtIndex?.call(context, index) ??
-                  const SizedBox(),
-              childCount: widget.itemCount?.call() ?? 0,
-            ),
-          ),
-        ],
+        ),
       ),
       bottomNavigationBar: RoomMiniPlayerBar(),
     );

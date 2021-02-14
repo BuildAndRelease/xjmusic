@@ -50,6 +50,11 @@ class GetLocalDirectoryResponseModel extends BaseProtocol {
     }
     return media;
   }
+
+  void combineMedia(GetLocalDirectoryResponseModel dataModel) {
+    directoryList.addAll(dataModel.directoryList);
+    mediaList.addAll(dataModel.mediaList);
+  }
 }
 
 class Node {
