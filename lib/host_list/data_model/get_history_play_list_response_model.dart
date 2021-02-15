@@ -19,7 +19,7 @@ class GetHistoryPlayListResponseModel extends BaseProtocol {
     pageSize = arg['pageSize'].toString();
     mediaList = arg['mediaList'];
   }
-  get mediaListCount => mediaList.length;
+  get mediaListCount => mediaList?.length ?? 0;
 
   BasicMedia mediaListAtIndex(int index) {
     BasicMedia media;

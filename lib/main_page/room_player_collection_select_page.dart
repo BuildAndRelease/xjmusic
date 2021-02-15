@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:xj_music/host_list/data_model/get_favorite_play_list_response_model.dart';
-import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 
 class RoomPlayerCollectionSelectPage extends StatefulWidget {
-  final List<CloudMusicMedia> medias;
+  final List medias;
 
   const RoomPlayerCollectionSelectPage(this.medias);
 

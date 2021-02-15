@@ -4,7 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_history_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
-import 'package:xj_music/themes/const.dart';
+import 'package:xj_music/main_page/room_player_collection_select_page.dart';
 
 class LocalMusicCloudRecentPlayPage extends StatefulWidget {
   @override
@@ -81,7 +81,14 @@ class _LocalMusicCloudRecentPlayPageState
                   },
                 ),
                 onTap: () {
-                  HostApi.playCurrentPlayList(media.toJson());
+                  List mediaList = [];
+                  for (var i = 0;
+                      i < _playListResponseModel.mediaListCount;
+                      i++) {
+                    mediaList.add(
+                        _playListResponseModel.mediaListAtIndex(i).toJson());
+                  }
+                  HostApi.playCloudMusicList(mediaList, media.toJson());
                 },
               ),
               Divider(
@@ -132,6 +139,26 @@ class _LocalMusicCloudRecentPlayPageState
 
   void _onMoreBtnSelected(BuildContext context, BasicMedia media) {
     final theme = Theme.of(context);
+    String songName = "";
+    String singerName = "";
+    String albumName = "";
+    if (media is CloudMusicMedia) {
+      songName = media.songName;
+      for (var i = 0; i < media.singers.length; i++) {
+        singerName += media.singerAtIndex(i).name + " ";
+      }
+      albumName = media.albumName;
+    } else if (media is LocalMusicMedia) {
+      songName = media.songName;
+      for (var i = 0; i < media.singers.length; i++) {
+        singerName += media.singerAtIndex(i).name + " ";
+      }
+      albumName = media.albumName;
+    } else if (media is CloudStoryTellingMedia) {
+      songName = media.sectionName;
+      singerName = media.anchorName;
+      albumName = media.sectionName;
+    }
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -149,20 +176,97 @@ class _LocalMusicCloudRecentPlayPageState
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("歌曲"),
+                  Text(
+                    "歌曲 ($songName)",
+                    maxLines: 1,
+                  ),
                 ],
               ),
-              ListTile(leading: Icon(Icons.skip_next), title: Text("下一首播放")),
+              ListTile(
+                leading: Icon(Icons.skip_next),
+                title: Text("下一首播放"),
+                onTap: () {
+                  HostApi.addToCloudMusicList(
+                    [media.toJson()],
+                    onError: (error) => showToast("添加到播放列表失败"),
+                    onResponse: (response) {
+                      if (response.resultCode == "0") {
+                        Navigator.of(context).pop();
+                        showToast("已添加到播放列表");
+                      } else {
+                        showToast("添加到播放列表失败");
+                      }
+                    },
+                  );
+                },
+              ),
               Divider(height: 0.5),
               ListTile(
-                  leading: Icon(Icons.create_new_folder_outlined),
-                  title: Text("收藏到歌单")),
+                leading: Icon(Icons.create_new_folder_outlined),
+                title: Text("收藏到歌单"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return RoomPlayerCollectionSelectPage([media]);
+                      });
+                },
+              ),
               Divider(height: 0.5),
-              ListTile(leading: Icon(Icons.file_download), title: Text("下载")),
+              ListTile(
+                leading: Icon(
+                  Icons.file_download,
+                  color: (media is CloudMusicMedia)
+                      ? null
+                      : Theme.of(context).disabledColor,
+                ),
+                title: Text("下载",
+                    style: (media is CloudMusicMedia)
+                        ? Theme.of(context).textTheme.bodyText2
+                        : Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Theme.of(context).disabledColor)),
+                onTap: () {
+                  HostApi.downloadMusicList(
+                    "",
+                    [media.toJson()],
+                    onResponse: (response) {
+                      if (response.resultCode == "0") {
+                        showToast("下载成功");
+                        Navigator.of(context).pop();
+                      } else
+                        showToast("下载失败");
+                    },
+                    onError: (error) => showToast("下载失败"),
+                  );
+                },
+              ),
               Divider(height: 0.5),
-              ListTile(leading: Icon(Icons.accessibility), title: Text("歌手")),
+              ListTile(
+                  leading: Icon(Icons.accessibility,
+                      color: Theme.of(context).disabledColor),
+                  title: Text(
+                    "歌手: $singerName",
+                    maxLines: 1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).disabledColor),
+                  )),
               Divider(height: 0.5),
-              ListTile(leading: Icon(Icons.album), title: Text("歌曲")),
+              ListTile(
+                  leading:
+                      Icon(Icons.album, color: Theme.of(context).disabledColor),
+                  title: Text(
+                    "专辑: $albumName",
+                    maxLines: 1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Theme.of(context).disabledColor),
+                  )),
               Divider(height: 0.5),
             ],
           ),
