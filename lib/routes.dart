@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_multi_select_page.dart';
 import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
@@ -17,10 +18,6 @@ import 'util/custom_route.dart';
 import 'util/global.dart';
 
 const String homeRoute = "home";
-const String roomMainPageRoute = "roomMainPage";
-const String roomPlayInfoPageRoute = "roomPlayInfoPage";
-const String localMusicCategoryPageRoute = "localMusicCategoryPage";
-const String localMusicSubCategoryPageRoute = "localMusicSubCategoryPage";
 
 class Routes {
   static String currentRoute;
@@ -66,15 +63,15 @@ class Routes {
   }
 
   static Future pushRoomMainPage(BuildContext context) {
-    return push(context, RoomMainPage(), roomMainPageRoute, fadeIn: true);
+    return push(context, RoomMainPage(), "roomMainPage", fadeIn: true);
   }
 
   static Future pushRoomPlayerInfoPage(BuildContext context) {
-    return push(context, RoomPlayerInfoPage(), roomPlayInfoPageRoute);
+    return push(context, RoomPlayerInfoPage(), "roomPlayInfoPage");
   }
 
   static Future pushLocalMusicCategoryPage(BuildContext context) {
-    return push(context, LocalMusicCategoryPage(), localMusicCategoryPageRoute,
+    return push(context, LocalMusicCategoryPage(), "localMusicCategoryPage",
         fadeIn: true);
   }
 
@@ -102,10 +99,16 @@ class Routes {
     return push(context, CloudMusicNewSongPage(), "cloudMusicNewSongPage");
   }
 
+  static Future pushCloudMusicMultiSelectPage(
+      BuildContext context, List medias) {
+    return push(context, CloudMusicMultiSelectPage(medias: medias),
+        "cloudMusicMultiSelectPage");
+  }
+
   static Future pushLocalMusicSubCategoryPage(BuildContext context,
       {String dir = "/", String head, String title, String subTitle}) {
     return push(context, LocalMusicSubCategoryPage(dir, head, title, subTitle),
-        localMusicSubCategoryPageRoute,
+        "localMusicSubCategoryPage",
         fadeIn: true);
   }
 

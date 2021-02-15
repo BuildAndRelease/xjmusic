@@ -6,6 +6,7 @@ import 'package:xj_music/host_list/data_model/get_playing_info_response_model.da
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/local_media/ui/music_ui_frame.dart';
 import 'package:xj_music/main_page/room_player_collection_select_page.dart';
+import 'package:xj_music/routes.dart';
 
 class CloudMusicNewSongPage extends StatefulWidget {
   @override
@@ -35,9 +36,11 @@ class _CloudMusicNewSongPageState extends State<CloudMusicNewSongPage> {
             subTitle: "",
             playBtnEnable: true,
             refreshEnable: true,
+            multiSelectBtnEnable: true,
             loadMoreEnable: false,
             onRefresh: _onRefresh,
             onPlayAll: _onPlayAll,
+            onMultiSelect: _onMultiSelectPage,
             refreshController: _refreshController,
             itemCount: () => value.songListCount,
             widgetAtIndex: (context, index) {
@@ -110,6 +113,15 @@ class _CloudMusicNewSongPageState extends State<CloudMusicNewSongPage> {
         _refreshController.refreshCompleted();
       },
     );
+  }
+
+  void _onMultiSelectPage() {
+    List list = [];
+    for (var i = 0; i < _musicListModel?.value?.songListCount ?? 0; i++) {
+      final dataModel = _musicListModel.value.songListAtIndex(i);
+      list.add(dataModel);
+    }
+    Routes.pushCloudMusicMultiSelectPage(context, list);
   }
 
   void _onMoreBtnSelected(BuildContext context, BasicMedia media) {

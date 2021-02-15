@@ -125,7 +125,7 @@ class _RoomMainCloudMusicFragmentState
               sizeHeight8,
               GestureDetector(
                 onTap: () => Routes.pushCloudMusicNewSongPage(context),
-                child: Expanded(child: Text("推荐歌曲 >")),
+                child: Text("推荐歌曲 >"),
               ),
               ...newSongWidgets
             ],
