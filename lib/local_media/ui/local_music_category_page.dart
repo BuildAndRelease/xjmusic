@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xj_music/local_media/ui/local_music_ui_frame.dart';
+import 'package:xj_music/local_media/ui/music_ui_frame.dart';
 import 'package:xj_music/routes.dart';
 
 class LocalMusicCategoryPage extends StatefulWidget {
@@ -25,7 +25,7 @@ class _LocalMusicCategoryPageState extends State<LocalMusicCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LocalMusicUIFrame(
+    return MusicUIFrame(
         headTitle: "本地音乐",
         title: "根目录",
         subTitle: "",

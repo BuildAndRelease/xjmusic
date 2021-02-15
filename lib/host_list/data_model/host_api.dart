@@ -475,7 +475,7 @@ class HostApi {
   static playCloudMusicList(List mediaList, Map media,
       {void Function(PlayResultResponseModel response) onResponse,
       void Function(Error error) onError}) async {
-    final arg = {"mediaList": mediaList, "media": media};
+    final arg = {"mediaList": mediaList, "playMedia": media};
     await DataCenter.instance.sendMsgToDevice("PlayCloudMusicList", arg,
         onResponse: (String reponse) {
       try {
@@ -2017,7 +2017,7 @@ class HostApi {
   static getNewSong(String area,
       {void Function(GetNewSongResponseModel response) onResponse,
       void Function(Error error) onError}) async {
-    final arg = {"area ": area};
+    final arg = {"area": area};
     await DataCenter.instance.sendMsgToDevice("GetNewSong", arg,
         onResponse: (String reponse) {
       try {

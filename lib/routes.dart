@@ -5,6 +5,7 @@ import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
+import 'cloud_music/ui/cloud_music_newsong_page.dart';
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
 import 'local_media/ui/local_music_favorite_playlist_manage_page.dart';
@@ -95,6 +96,10 @@ class Routes {
   static Future pushLocalMusicFavoritePlayListPage(BuildContext context) {
     return push(context, LocalMusicFavoritePlaylistManagePage(),
         "localMusicFavoritePlaylistManagePage");
+  }
+
+  static Future pushCloudMusicNewSongPage(BuildContext context) {
+    return push(context, CloudMusicNewSongPage(), "cloudMusicNewSongPage");
   }
 
   static Future pushLocalMusicSubCategoryPage(BuildContext context,

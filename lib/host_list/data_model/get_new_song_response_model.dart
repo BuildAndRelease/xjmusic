@@ -32,7 +32,7 @@ class GetNewSongResponseModel extends BaseProtocol {
     return areaList[index];
   }
 
-  get songListCount => songList.length;
+  get songListCount => songList?.length ?? 0;
   CloudMusicMedia songListAtIndex(int index) {
     return songList[index];
   }

@@ -8,7 +8,7 @@ import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 import 'package:xj_music/util/const.dart';
 
-class LocalMusicUIFrame extends StatefulWidget {
+class MusicUIFrame extends StatefulWidget {
   final String headTitle;
   final String title;
   final String subTitle;
@@ -27,7 +27,7 @@ class LocalMusicUIFrame extends StatefulWidget {
   final void Function() onLoadMore;
   final RefreshController refreshController;
 
-  const LocalMusicUIFrame(
+  const MusicUIFrame(
       {this.headTitle,
       this.title,
       this.subTitle,
@@ -47,10 +47,10 @@ class LocalMusicUIFrame extends StatefulWidget {
       @required this.refreshController});
 
   @override
-  _LocalMusicUIFrameState createState() => _LocalMusicUIFrameState();
+  _MusicUIFrameState createState() => _MusicUIFrameState();
 }
 
-class _LocalMusicUIFrameState extends State<LocalMusicUIFrame> {
+class _MusicUIFrameState extends State<MusicUIFrame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

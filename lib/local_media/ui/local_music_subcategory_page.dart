@@ -7,7 +7,7 @@ import 'package:xj_music/host_list/data_model/get_playing_info_response_model.da
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/routes.dart';
 
-import 'local_music_ui_frame.dart';
+import 'music_ui_frame.dart';
 
 class LocalMusicSubCategoryPage extends StatefulWidget {
   final String dir;
@@ -49,7 +49,7 @@ class _LocalMusicSubCategoryPageState extends State<LocalMusicSubCategoryPage> {
     return ValueListenableBuilder(
       valueListenable: _musicListModel,
       builder: (context, value, child) {
-        return LocalMusicUIFrame(
+        return MusicUIFrame(
             headTitle: widget.head,
             title: widget.title,
             subTitle: widget.subTitle,
