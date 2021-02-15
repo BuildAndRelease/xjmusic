@@ -12,6 +12,7 @@ class MusicUIFrame extends StatefulWidget {
   final String headTitle;
   final String title;
   final String subTitle;
+  final String imageUrl;
   final bool playBtnEnable;
   final bool addBtnEnable;
   final bool multiSelectBtnEnable;
@@ -31,6 +32,7 @@ class MusicUIFrame extends StatefulWidget {
       {this.headTitle,
       this.title,
       this.subTitle,
+      this.imageUrl,
       this.playBtnEnable = false,
       this.addBtnEnable = false,
       this.multiSelectBtnEnable = false,
@@ -106,9 +108,9 @@ class _MusicUIFrameState extends State<MusicUIFrame> {
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: defaultIcon,
+          imageUrl: widget.imageUrl ?? defaultIcon,
           width: double.infinity,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
@@ -127,11 +129,22 @@ class _MusicUIFrameState extends State<MusicUIFrame> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: defaultIcon,
-                    fit: BoxFit.cover,
-                    width: 100,
-                    height: 100,
-                  ),
+                      fadeInDuration: Duration.zero,
+                      imageUrl: widget.imageUrl ?? defaultIcon,
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
+                      imageBuilder: (_, image) {
+                        return Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: image, fit: BoxFit.cover),
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                          ),
+                        );
+                      }),
                   sizeWidth16,
                   Column(
                     mainAxisSize: MainAxisSize.min,

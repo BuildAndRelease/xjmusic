@@ -12,7 +12,7 @@ class GetAlbumResponseModel extends BaseProtocol {
   GetAlbumResponseModel(Map json) : super(json) {
     if (arg['list'] != null) {
       list = <AlumItem>[];
-      json['list'].forEach((v) {
+      arg['list'].forEach((v) {
         list.add(new AlumItem.fromJson(v));
       });
     }
@@ -26,6 +26,10 @@ class GetAlbumResponseModel extends BaseProtocol {
 
   AlumItem listAtIndex(int index) {
     return list[index];
+  }
+
+  void combineMoreData(GetAlbumResponseModel dataModel) {
+    list.addAll(dataModel.list);
   }
 }
 

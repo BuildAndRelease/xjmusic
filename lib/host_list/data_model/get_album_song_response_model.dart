@@ -26,7 +26,7 @@ class GetAlbumSongResponseModel extends BaseProtocol {
     desc = arg['desc'].toString();
     if (arg['list'] != null) {
       list = <CloudMusicMedia>[];
-      json['list'].forEach((v) {
+      arg['list'].forEach((v) {
         list.add(new CloudMusicMedia.fromJson(v));
       });
     }
@@ -35,7 +35,7 @@ class GetAlbumSongResponseModel extends BaseProtocol {
     songBegin = arg['song_begin'].toString();
     totalSongNum = arg['total_song_num'].toString();
   }
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
   CloudMusicMedia listAtIndex(int index) {
     return list[index];
   }

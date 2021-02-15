@@ -87,8 +87,10 @@ class _RoomMainCloudMusicFragmentState
       albumWidgets.add(_buildRecommendAlbum(
           dataModel.albumName,
           dataModel.singerName,
-          utf8.decode(base64.decode(dataModel.picUrl)),
-          () {}));
+          utf8.decode(base64.decode(dataModel.picUrl)), () {
+        Routes.pushAlbumSongPage(context, dataModel.albumMID,
+            dataModel.albumName, dataModel.singerName);
+      }));
     }
     return Container(
         color: Theme.of(context).backgroundColor,
@@ -114,7 +116,10 @@ class _RoomMainCloudMusicFragmentState
               sizeHeight8,
               Divider(height: 0.5),
               sizeHeight8,
-              Text("推荐专辑 >"),
+              GestureDetector(
+                onTap: () => Routes.pushAlbumPage(context),
+                child: Text("推荐专辑 >"),
+              ),
               sizeHeight8,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

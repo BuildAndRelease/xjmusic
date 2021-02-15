@@ -6,6 +6,8 @@ import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
+import 'cloud_music/ui/cloud_music_album_list_page.dart';
+import 'cloud_music/ui/cloud_music_album_song_page.dart';
 import 'cloud_music/ui/cloud_music_newsong_page.dart';
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
@@ -115,6 +117,16 @@ class Routes {
   static Future pushRecentPlayPage(BuildContext context) {
     return push(
         context, LocalMusicRecentPlayPage(), "localMusicRecentPlayPage");
+  }
+
+  static Future pushAlbumPage(BuildContext context) {
+    return push(context, CloudMusicAlbumListPage(), "CloudMusicAlbumListPage");
+  }
+
+  static Future pushAlbumSongPage(
+      BuildContext context, String albumMid, String title, String subTitle) {
+    return push(context, CloudMusicAlbumSongPage(albumMid, title, subTitle),
+        "cloudMusicAlbumSongPage");
   }
 
   static void backHome() {
