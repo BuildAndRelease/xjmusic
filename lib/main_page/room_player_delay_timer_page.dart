@@ -19,7 +19,7 @@ class _RoomPlayerDelayTimerPageState extends State<RoomPlayerDelayTimerPage> {
 
   StreamSubscription _delayCloseTimerSubscription;
   TextEditingController _textFieldController =
-      TextEditingController.fromValue(TextEditingValue(text: '10'));
+      TextEditingController.fromValue(TextEditingValue(text: ''));
 
   @override
   void initState() {

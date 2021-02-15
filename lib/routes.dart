@@ -7,6 +7,7 @@ import 'package:xj_music/main_page/room_player_playlist_page.dart';
 
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
+import 'local_media/ui/local_music_favorite_playlist_manage_page.dart';
 import 'local_media/ui/local_music_recent_play_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
@@ -89,6 +90,11 @@ class Routes {
       BuildContext context, String albumSetId) {
     return push(context, LocalAlbumFavoriteInfoPage(albumSetId),
         "localAlbumFavoriteSetInfoPage");
+  }
+
+  static Future pushLocalMusicFavoritePlayListPage(BuildContext context) {
+    return push(context, LocalMusicFavoritePlaylistManagePage(),
+        "localMusicFavoritePlaylistManagePage");
   }
 
   static Future pushLocalMusicSubCategoryPage(BuildContext context,
