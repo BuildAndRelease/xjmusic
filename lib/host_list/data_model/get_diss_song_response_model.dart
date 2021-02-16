@@ -22,23 +22,23 @@ class GetDissSongResponseModel extends BaseProtocol {
     dissPic = json['dissPic'].toString();
     disstId = json['disstId'].toString();
 
-    if (json['list'] != null) {
+    if (arg['list'] != null) {
       list = <CloudMusicMedia>[];
-      json['list'].forEach((v) {
+      arg['list'].forEach((v) {
         list.add(new CloudMusicMedia.fromJson(v));
       });
     }
-    resultCode = json['resultCode'].toString();
-    songNum = json['songNum'].toString();
+    resultCode = arg['resultCode'].toString();
+    songNum = arg['songNum'].toString();
 
-    if (json['tags'] != null) {
+    if (arg['tags'] != null) {
       tags = <Tag>[];
-      json['tags'].forEach((v) {
+      arg['tags'].forEach((v) {
         tags.add(new Tag.fromJson(v));
       });
     }
   }
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
   CloudMusicMedia listAtIndex(int index) {
     return list[index];
   }
@@ -46,6 +46,10 @@ class GetDissSongResponseModel extends BaseProtocol {
   get tagsCount => tags.length;
   Tag tagsAtIndex(int index) {
     return tags[index];
+  }
+
+  void combineMoreData(GetDissSongResponseModel dataModel) {
+    list.addAll(dataModel.list);
   }
 }
 

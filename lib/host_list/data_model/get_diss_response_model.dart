@@ -11,23 +11,27 @@ class GetDissResponseModel extends BaseProtocol {
   String sum;
 
   GetDissResponseModel(Map json) : super(json) {
-    categoryId = json['categoryId'].toString();
-    ein = json['ein'].toString();
-    if (json['list'] != null) {
+    categoryId = arg['categoryId'].toString();
+    ein = arg['ein'].toString();
+    if (arg['list'] != null) {
       list = <Diss>[];
-      json['list'].forEach((v) {
+      arg['list'].forEach((v) {
         list.add(new Diss.fromJson(v));
       });
     }
-    resultCode = json['resultCode'].toString();
-    sin = json['sin'].toString();
-    sortId = json['sortId'].toString();
-    sum = json['sum'].toString();
+    resultCode = arg['resultCode'].toString();
+    sin = arg['sin'].toString();
+    sortId = arg['sortId'].toString();
+    sum = arg['sum'].toString();
   }
 
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
   Diss listAtIndex(int index) {
     return list[index];
+  }
+
+  void combineMoreData(GetDissResponseModel dataModel) {
+    list.addAll(dataModel.list);
   }
 }
 

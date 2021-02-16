@@ -7,6 +7,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_top_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
+import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 
@@ -77,6 +78,7 @@ class _CloudMusicTopListPageState extends State<CloudMusicTopListPage> {
             itemCount: items.length,
             itemExtent: 100,
           )),
+      bottomNavigationBar: RoomMiniPlayerBar(),
     );
   }
 

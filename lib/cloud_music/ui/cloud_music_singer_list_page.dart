@@ -7,6 +7,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_singer_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
+import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 
 import 'cloud_music_singer_list_screen_page.dart';
@@ -122,6 +123,7 @@ class _CloudMusicSingerListPageState extends State<CloudMusicSingerListPage> {
           )),
         ],
       ),
+      bottomNavigationBar: RoomMiniPlayerBar(),
     );
   }
 
@@ -167,7 +169,7 @@ class _CloudMusicSingerListPageState extends State<CloudMusicSingerListPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("专辑分类"),
+            title: Text("歌手分类"),
             content: SizedBox(
               height: 400,
               width: 300,

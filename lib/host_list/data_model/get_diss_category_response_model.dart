@@ -6,9 +6,9 @@ class GetDissCategoryResponseModel extends BaseProtocol {
   String resultCode;
 
   GetDissCategoryResponseModel(Map json) : super(json) {
-    if (json['categories'] != null) {
+    if (arg['categories'] != null) {
       categories = <CategorieGroup>[];
-      json['categories'].forEach((v) {
+      arg['categories'].forEach((v) {
         categories.add(new CategorieGroup.fromJson(v));
       });
     }

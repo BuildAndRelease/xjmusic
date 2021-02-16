@@ -16,7 +16,7 @@ class GetSingerSongResponseModel extends BaseProtocol {
     perPage = arg['per_page'].toString();
     total = arg['total'].toString();
   }
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
 
   CloudMusicMedia listAtIndex(int index) {
     return CloudMusicMedia.fromJson(list[index]);

@@ -166,11 +166,11 @@ class Routes {
     return push(context, CloudMusicDissListPage(), "CloudMusicDissListPage");
   }
 
-  static Future pushDissSongListPage(
-      BuildContext context, String dissName, String dissInfo, String dissPic) {
+  static Future pushDissSongListPage(BuildContext context, String dissId,
+      String dissName, String dissInfo, String dissPic) {
     return push(
         context,
-        CloudMusicDissSongListPage(dissName, dissInfo, dissPic),
+        CloudMusicDissSongListPage(dissId, dissName, dissInfo, dissPic),
         "CloudMusicSingerSongListPage");
   }
 
