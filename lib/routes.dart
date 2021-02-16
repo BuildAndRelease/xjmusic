@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_diss_list_page.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_diss_song_list_page.dart';
 import 'package:xj_music/cloud_music/ui/cloud_music_multi_select_page.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_radio_list_page.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_singer_list_page.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_singer_song_list_page.dart';
 import 'package:xj_music/cloud_music/ui/cloud_music_top_song_list_page.dart';
 import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
@@ -141,6 +146,36 @@ class Routes {
         context,
         CloudMusicTopSongListPage(topListDate, topListId, topListName, topPic),
         "CloudMusicTopSongListPage");
+  }
+
+  static Future pushSingerListPage(BuildContext context) {
+    return push(
+        context, CloudMusicSingerListPage(), "CloudMusicSingerListPage");
+  }
+
+  static Future pushSingerSongListPage(BuildContext context, String singerMid,
+      String singerName, String singerOtherName, String singerPic) {
+    return push(
+        context,
+        CloudMusicSingerSongListPage(
+            singerMid, singerName, singerOtherName, singerPic),
+        "CloudMusicSingerSongListPage");
+  }
+
+  static Future pushDissListPage(BuildContext context) {
+    return push(context, CloudMusicDissListPage(), "CloudMusicDissListPage");
+  }
+
+  static Future pushDissSongListPage(
+      BuildContext context, String dissName, String dissInfo, String dissPic) {
+    return push(
+        context,
+        CloudMusicDissSongListPage(dissName, dissInfo, dissPic),
+        "CloudMusicSingerSongListPage");
+  }
+
+  static Future pushRadioListPage(BuildContext context) {
+    return push(context, CloudMusicRadioListPage(), "CloudMusicRadioListPage");
   }
 
   static void backHome() {

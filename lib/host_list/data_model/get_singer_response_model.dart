@@ -19,9 +19,13 @@ class GetSingerResponseModel extends BaseProtocol {
     perPage = arg['per_page'].toString();
     total = arg['total'].toString();
   }
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
 
   CloudSingerSet listAtIndex(int index) {
     return CloudSingerSet.fromJson(list[index]);
+  }
+
+  void combineMoreData(GetSingerResponseModel dataModel) {
+    list.addAll(dataModel.list);
   }
 }

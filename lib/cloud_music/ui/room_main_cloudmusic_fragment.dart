@@ -106,11 +106,12 @@ class _RoomMainCloudMusicFragmentState
                 children: [
                   _buildMusicCategoryIconButton(FontAwesome.sellsy, "榜单",
                       () => Routes.pushTopListPage(context)),
-                  _buildMusicCategoryIconButton(
-                      Typicons.user_outline, "歌手", () {}),
-                  _buildMusicCategoryIconButton(
-                      Typicons.th_large_outline, "歌单", () {}),
-                  _buildMusicCategoryIconButton(Icons.radio, "电台", () {}),
+                  _buildMusicCategoryIconButton(Typicons.user_outline, "歌手",
+                      () => Routes.pushSingerListPage(context)),
+                  _buildMusicCategoryIconButton(Typicons.th_large_outline, "歌单",
+                      () => Routes.pushDissListPage(context)),
+                  _buildMusicCategoryIconButton(Icons.radio, "电台",
+                      () => Routes.pushRadioListPage(context)),
                 ],
               ),
               sizeHeight8,

@@ -21,4 +21,8 @@ class GetSingerSongResponseModel extends BaseProtocol {
   CloudMusicMedia listAtIndex(int index) {
     return CloudMusicMedia.fromJson(list[index]);
   }
+
+  void combineMoreData(GetSingerSongResponseModel dataModel) {
+    list.addAll(dataModel.list);
+  }
 }
