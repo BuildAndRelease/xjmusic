@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xj_music/cloud_music/ui/cloud_music_multi_select_page.dart';
+import 'package:xj_music/cloud_music/ui/cloud_music_top_song_list_page.dart';
 import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
@@ -9,6 +10,7 @@ import 'package:xj_music/main_page/room_player_playlist_page.dart';
 import 'cloud_music/ui/cloud_music_album_list_page.dart';
 import 'cloud_music/ui/cloud_music_album_song_page.dart';
 import 'cloud_music/ui/cloud_music_newsong_page.dart';
+import 'cloud_music/ui/cloud_music_top_list_page.dart';
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
 import 'local_media/ui/local_music_favorite_playlist_manage_page.dart';
@@ -127,6 +129,18 @@ class Routes {
       BuildContext context, String albumMid, String title, String subTitle) {
     return push(context, CloudMusicAlbumSongPage(albumMid, title, subTitle),
         "cloudMusicAlbumSongPage");
+  }
+
+  static Future pushTopListPage(BuildContext context) {
+    return push(context, CloudMusicTopListPage(), "CloudMusicTopListPage");
+  }
+
+  static Future pushTopSongPage(BuildContext context, String topListDate,
+      String topListId, String topListName, String topPic) {
+    return push(
+        context,
+        CloudMusicTopSongListPage(topListDate, topListId, topListName, topPic),
+        "CloudMusicTopSongListPage");
   }
 
   static void backHome() {

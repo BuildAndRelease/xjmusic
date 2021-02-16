@@ -39,7 +39,7 @@ class TopItem {
     return data;
   }
 
-  get listCount => list.length;
+  get listCount => list?.length ?? 0;
 
   Item listAtIndex(int index) {
     return list[index];

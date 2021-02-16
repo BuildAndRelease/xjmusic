@@ -104,8 +104,8 @@ class _RoomMainCloudMusicFragmentState
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildMusicCategoryIconButton(
-                      FontAwesome.sellsy, "榜单", () {}),
+                  _buildMusicCategoryIconButton(FontAwesome.sellsy, "榜单",
+                      () => Routes.pushTopListPage(context)),
                   _buildMusicCategoryIconButton(
                       Typicons.user_outline, "歌手", () {}),
                   _buildMusicCategoryIconButton(
