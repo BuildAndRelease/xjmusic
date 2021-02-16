@@ -14,7 +14,7 @@ class GetRadioResponseModel extends BaseProtocol {
     }
     resultCode = arg['resultCode'].toString();
   }
-  get groupListCount => groupList.length;
+  get groupListCount => groupList?.length ?? 0;
   GroupList groupListAtIndex(int index) {
     return groupList[index];
   }
