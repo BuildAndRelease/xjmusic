@@ -11,6 +11,7 @@ import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
+import 'package:xj_music/net_radio/ui/netradio_list_page.dart';
 import 'package:xj_music/story/ui/storytelling_anchor_album_page.dart';
 import 'package:xj_music/story/ui/storytelling_anchor_list_page.dart';
 import 'package:xj_music/story/ui/storytelling_category_album_page.dart';
@@ -223,6 +224,10 @@ class Routes {
       BuildContext context, String topId) {
     return push(context, StorytellingTopListAlbumPage(topId),
         "StorytellingTopListAlbumPage");
+  }
+
+  static Future pushNetRadioListPage(BuildContext context, String categoryId) {
+    return push(context, NetRadioListPage(categoryId), "NetRadioListPage");
   }
 
   static void backHome() {
