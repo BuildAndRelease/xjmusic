@@ -43,7 +43,7 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
       final dataModel = _recommendResponseModel?.mediaListAtIndex(i);
       widgets.add(_buildRecommendAlbum(dataModel.sectionName,
           dataModel.anchorName, utf8.decode(base64.decode(dataModel.pic)), () {
-        Routes.pushStoryTellingPage(
+        Routes.pushStoryTellingSongListPage(
             context,
             dataModel.id,
             dataModel.sectionName,

@@ -11,6 +11,12 @@ import 'package:xj_music/local_media/ui/local_album_favorite_info_page.dart';
 import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
+import 'package:xj_music/story/ui/storytelling_anchor_album_page.dart';
+import 'package:xj_music/story/ui/storytelling_anchor_list_page.dart';
+import 'package:xj_music/story/ui/storytelling_category_album_page.dart';
+import 'package:xj_music/story/ui/storytelling_category_page.dart';
+import 'package:xj_music/story/ui/storytelling_toplist_album_page.dart';
+import 'package:xj_music/story/ui/storytelling_toplist_page.dart';
 
 import 'cloud_music/ui/cloud_music_album_list_page.dart';
 import 'cloud_music/ui/cloud_music_album_song_page.dart';
@@ -23,7 +29,7 @@ import 'local_media/ui/local_music_recent_play_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
 import 'splash_page.dart';
-import 'story/ui/story_telling_song_list_page.dart';
+import 'story/ui/storytelling_song_list_page.dart';
 import 'util/custom_route.dart';
 import 'util/global.dart';
 
@@ -179,12 +185,44 @@ class Routes {
     return push(context, CloudMusicRadioListPage(), "CloudMusicRadioListPage");
   }
 
-  static Future pushStoryTellingPage(BuildContext context, String albumId,
-      String albumName, String albumInfo, String albumImg) {
+  static Future pushStoryTellingSongListPage(BuildContext context,
+      String albumId, String albumName, String albumInfo, String albumImg) {
     return push(
         context,
         StoryTellingSongListPage(albumId, albumName, albumInfo, albumImg),
         "StoryTellingSongListPage");
+  }
+
+  static Future pushStoryTellingAnchorListPage(BuildContext context) {
+    return push(
+        context, StorytellingAnchorListPage(), "StorytellingAnchorListPage");
+  }
+
+  static Future pushStoryTellingAnchorAlbumListPage(
+      BuildContext context, String anchorId) {
+    return push(context, StorytellingAnchorAlbumPage(anchorId),
+        "StorytellingAnchorAlbumPage");
+  }
+
+  static Future pushStoryTellingCategoryListPage(BuildContext context) {
+    return push(
+        context, StorytellingCategoryPage(), "StorytellingCategoryPage");
+  }
+
+  static Future pushStoryTellingCategoryAlbumListPage(
+      BuildContext context, String categoryId) {
+    return push(context, StorytellingCategoryAlbumPage(categoryId),
+        "StorytellingCategoryAlbumPage");
+  }
+
+  static Future pushStoryTellingTopListPage(BuildContext context) {
+    return push(context, StorytellingToplistPage(), "StorytellingToplistPage");
+  }
+
+  static Future pushStoryTellingTopAlbumListPage(
+      BuildContext context, String topId) {
+    return push(context, StorytellingTopListAlbumPage(topId),
+        "StorytellingTopListAlbumPage");
   }
 
   static void backHome() {
