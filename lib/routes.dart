@@ -23,6 +23,7 @@ import 'local_media/ui/local_music_recent_play_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
 import 'splash_page.dart';
+import 'story/ui/story_telling_song_list_page.dart';
 import 'util/custom_route.dart';
 import 'util/global.dart';
 
@@ -176,6 +177,14 @@ class Routes {
 
   static Future pushRadioListPage(BuildContext context) {
     return push(context, CloudMusicRadioListPage(), "CloudMusicRadioListPage");
+  }
+
+  static Future pushStoryTellingPage(BuildContext context, String albumId,
+      String albumName, String albumInfo, String albumImg) {
+    return push(
+        context,
+        StoryTellingSongListPage(albumId, albumName, albumInfo, albumImg),
+        "StoryTellingSongListPage");
   }
 
   static void backHome() {

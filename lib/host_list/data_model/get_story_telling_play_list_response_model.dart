@@ -21,4 +21,8 @@ class GetStorytellingPlaylistResponseModel extends BaseProtocol {
   CloudStoryTellingMedia mediaPlayListAtIndex(int index) {
     return mediaPlayList[index];
   }
+
+  void combineMoreData(GetStorytellingPlaylistResponseModel dataModle) {
+    mediaPlayList.addAll(dataModle.mediaPlayList);
+  }
 }

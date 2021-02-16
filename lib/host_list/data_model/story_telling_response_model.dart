@@ -17,7 +17,7 @@ class StorytellingResponseModel extends BaseProtocol {
     resultCode = json['resultCode'].toString();
     total = json['total'].toString();
   }
-  get mediaListCount => mediaList.length;
+  get mediaListCount => mediaList?.length ?? 0;
   CloudStoryTellingMedia mediaListAtIndex(int index) {
     return mediaList[index];
   }
