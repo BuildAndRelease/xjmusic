@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xj_music/host_list/data_model/get_story_telling_category_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_category_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';

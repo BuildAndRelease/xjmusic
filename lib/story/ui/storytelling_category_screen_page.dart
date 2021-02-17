@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xj_music/host_list/data_model/get_story_telling_category_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_category_response_model.dart';
 
 class StorytellingCategoryScreenPage extends StatefulWidget {
   final Category category;

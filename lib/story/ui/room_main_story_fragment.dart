@@ -7,7 +7,7 @@ import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xj_music/host_list/data_model/get_story_telling_play_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';

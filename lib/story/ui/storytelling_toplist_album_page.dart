@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:xj_music/host_list/data_model/get_story_telling_rank_album_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_rank_album_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/routes.dart';
 

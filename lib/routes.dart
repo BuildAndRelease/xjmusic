@@ -23,7 +23,7 @@ import 'cloud_music/ui/cloud_music_album_list_page.dart';
 import 'cloud_music/ui/cloud_music_album_song_page.dart';
 import 'cloud_music/ui/cloud_music_newsong_page.dart';
 import 'cloud_music/ui/cloud_music_top_list_page.dart';
-import 'host_list/data_model/get_story_telling_category_response_model.dart';
+import 'host_list/data_model/get_storytelling_category_response_model.dart';
 import 'host_list/ui/host_list.dart';
 import 'local_media/ui/local_album_favorite_list_page.dart';
 import 'local_media/ui/local_music_favorite_playlist_manage_page.dart';
