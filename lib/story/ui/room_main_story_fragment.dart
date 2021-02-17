@@ -7,6 +7,7 @@ import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:xj_music/host_list/data_model/get_story_telling_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/host_list/data_model/story_telling_response_model.dart';
 import 'package:xj_music/routes.dart';
@@ -20,7 +21,7 @@ class RoomMainStoryFragment extends StatefulWidget {
 class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  StorytellingResponseModel _recommendResponseModel;
+  GetStorytellingAlumlistResponseModel _recommendResponseModel;
 
   @override
   void initState() {
@@ -38,16 +39,16 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
   Widget build(BuildContext context) {
     final List<Widget> widgets = [];
     for (var i = 0;
-        i < min((_recommendResponseModel?.mediaListCount ?? 0), 9);
+        i < min((_recommendResponseModel?.albumListCount ?? 0), 9);
         i++) {
-      final dataModel = _recommendResponseModel?.mediaListAtIndex(i);
-      widgets.add(_buildRecommendAlbum(dataModel.sectionName,
-          dataModel.anchorName, utf8.decode(base64.decode(dataModel.pic)), () {
+      final dataModel = _recommendResponseModel?.albumListAtIndex(i);
+      widgets.add(_buildRecommendAlbum(dataModel.mediaName,
+          dataModel.description, utf8.decode(base64.decode(dataModel.pic)), () {
         Routes.pushStoryTellingSongListPage(
             context,
             dataModel.id,
-            dataModel.sectionName,
-            dataModel.anchorName,
+            dataModel.mediaName,
+            dataModel.description,
             utf8.decode(base64Decode(dataModel.pic)));
       }));
     }
@@ -81,6 +82,7 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
               sizeHeight8,
               Wrap(
                 spacing: 5,
+                alignment: WrapAlignment.spaceAround,
                 runSpacing: 5,
                 children: widgets,
               ),
@@ -101,12 +103,12 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
           CachedNetworkImage(
               fadeInDuration: Duration.zero,
               imageUrl: imageUrl,
-              width: 100,
-              height: 100,
+              width: 120,
+              height: 120,
               imageBuilder: (_, image) {
                 return Container(
-                  width: 100,
-                  height: 100,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
                     image: DecorationImage(image: image, fit: BoxFit.cover),
                     borderRadius: BorderRadius.all(Radius.circular(2)),
@@ -114,7 +116,7 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
                 );
               }),
           SizedBox(
-            width: 100,
+            width: 120,
             child: Text(
               title,
               style:
@@ -124,7 +126,7 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
             ),
           ),
           SizedBox(
-            width: 100,
+            width: 120,
             child: Text(
               subTitle,
               style:
@@ -176,7 +178,7 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
       onResponse: (response) {
         _recommendResponseModel = response;
         _refreshController.refreshCompleted();
-        setState(() {});
+        if (mounted) setState(() {});
       },
     );
   }

@@ -2259,7 +2259,7 @@ class HostApi {
 
   //5.3.5获取语言节目的推荐
   static getStorytellingPush(String pagenum, String perpage, String pushType,
-      {void Function(StorytellingResponseModel response) onResponse,
+      {void Function(GetStorytellingAlumlistResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"pagenum": pagenum, "perpage": perpage, "pushType": pushType};
     await DataCenter.instance.sendMsgToDevice("GetStorytellingPush", arg,
@@ -2267,7 +2267,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(StorytellingResponseModel(json));
+          onResponse?.call(GetStorytellingAlumlistResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {

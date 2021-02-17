@@ -146,26 +146,31 @@ class _MusicUIFrameState extends State<MusicUIFrame> {
                         );
                       }),
                   sizeWidth16,
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.title ?? "",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .copyWith(color: Colors.white),
-                      ),
-                      Text(
-                        widget.subTitle ?? "",
-                        maxLines: 3,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .copyWith(color: Colors.white),
-                      )
-                    ],
+                  SizedBox(
+                    width: 270,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.title ?? "",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        sizeHeight12,
+                        Text(
+                          widget.subTitle ?? "",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(color: Colors.white),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

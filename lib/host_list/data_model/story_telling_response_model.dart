@@ -8,9 +8,9 @@ class StorytellingResponseModel extends BaseProtocol {
   String total;
 
   StorytellingResponseModel(Map json) : super(json) {
-    if (json['mediaList'] != null) {
+    if (arg['mediaList'] != null) {
       mediaList = <CloudStoryTellingMedia>[];
-      json['mediaList'].forEach((v) {
+      arg['mediaList'].forEach((v) {
         mediaList.add(new CloudStoryTellingMedia.fromJson(v));
       });
     }

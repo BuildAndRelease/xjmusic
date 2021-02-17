@@ -38,7 +38,6 @@ class _StoryTellingSongListPageState extends State<StoryTellingSongListPage> {
         subTitle: widget.albumInfo,
         playBtnEnable: false,
         refreshEnable: true,
-        multiSelectBtnEnable: true,
         loadMoreEnable: true,
         onRefresh: _onRefresh,
         onLoadMore: _onLoadMore,
@@ -55,6 +54,8 @@ class _StoryTellingSongListPageState extends State<StoryTellingSongListPage> {
                 leading: Text("${index + 1}"),
                 title: Text(
                   media.sectionName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 subtitle: Text(media.anchorName),
