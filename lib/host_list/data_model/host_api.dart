@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_favorite_set_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_story_telling_rank_album_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/party_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_list_mode_response_model.dart';
@@ -47,6 +48,7 @@ import 'get_singer_response_model.dart';
 import 'get_singer_song_response_model.dart';
 import 'get_story_telling_album_info_model.dart';
 import 'get_story_telling_category_response_model.dart';
+import 'get_story_telling_rank_list_response_model.dart';
 import 'get_story_telling_response_model .dart';
 import 'get_top_list_response_model.dart';
 import 'get_top_list_song_response_model.dart';
@@ -59,7 +61,7 @@ import 'contain_response_model.dart';
 import 'folder_id_response_model.dart';
 import 'del_favorite_media_response_model.dart';
 import 'del_favorite_play_list_response_model.dart';
-import 'get_alum_set_favorite_list_response_model.dart';
+import 'get_album_set_favorite_list_response_model.dart';
 import 'get_favorite_media_response_model.dart';
 import 'media_src_response_model.dart';
 import 'eq_response_model.dart';
@@ -2436,7 +2438,7 @@ class HostApi {
 
   //5.3.13获取所有榜单
   static getStoryTellingRankingList(
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStoryTellingTopListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {};
     await DataCenter.instance.sendMsgToDevice("GetStoryTellingRankingList", arg,
@@ -2444,7 +2446,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStoryTellingTopListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2456,7 +2458,8 @@ class HostApi {
   //5.3.14获取榜单下的专辑
   static getStoryTellingRankingListAlbum(
       String rankingListId, String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStorytellingRankAlbumListResponseModel response)
+          onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "rankingListId": rankingListId,
@@ -2468,7 +2471,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStorytellingRankAlbumListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
