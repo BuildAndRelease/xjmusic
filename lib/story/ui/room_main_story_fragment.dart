@@ -67,8 +67,8 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
                       () => Routes.pushStoryTellingCategoryListPage(context)),
                   _buildMusicCategoryIconButton(FontAwesome.sellsy, "榜单",
                       () => Routes.pushStoryTellingTopListPage(context)),
-                  _buildMusicCategoryIconButton(
-                      Typicons.user_outline, "主播", () => print("object")),
+                  _buildMusicCategoryIconButton(Typicons.user_outline, "主播",
+                      () => Routes.pushStoryTellingAnchorListPage(context)),
                 ],
               ),
               sizeHeight8,

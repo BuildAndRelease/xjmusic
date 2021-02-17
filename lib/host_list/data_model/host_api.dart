@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_favorite_set_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_anchor_category_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_storytelling_rank_album_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/party_stat_response_model.dart';
 import 'package:xj_music/host_list/data_model/play_cmd_response_model.dart';
@@ -47,6 +48,7 @@ import 'get_singer_album_response_model.dart';
 import 'get_singer_response_model.dart';
 import 'get_singer_song_response_model.dart';
 import 'get_storytelling_album_info_model.dart';
+import 'get_storytelling_anchor_list_response_model.dart';
 import 'get_storytelling_category_response_model.dart';
 import 'get_storytelling_rank_list_response_model.dart';
 import 'get_storytelling_response_model .dart';
@@ -2303,7 +2305,8 @@ class HostApi {
 
   //5.3.7获取所有主播分类
   static getStoryTellingAnchorCategory(
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStorytellingAnchorCategoryResponseModel response)
+          onResponse,
       void Function(Error error) onError}) async {
     final arg = {};
     await DataCenter.instance.sendMsgToDevice(
@@ -2311,7 +2314,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStorytellingAnchorCategoryResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2323,7 +2326,8 @@ class HostApi {
   //5.3.8获取分类下的主播
   static getStoryTellingAnchor(
       String categoryId, String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStorytellingAnchorListResponseModel response)
+          onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "categoryId": categoryId,
@@ -2335,7 +2339,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStorytellingAnchorListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2347,7 +2351,8 @@ class HostApi {
   //5.3.9获取分类下的主播[Normal]
   static getStoryTellingAnchorByNormal(String categoryName,
       String recommendType, String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStorytellingAnchorListResponseModel response)
+          onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "categoryName": categoryName,
@@ -2360,7 +2365,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStorytellingAnchorListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2372,7 +2377,7 @@ class HostApi {
   //5.3.10获取主播的专辑列表
   static getStoryTellingAnchorAlbum(
       String anchorId, String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetStorytellingResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "anchorId": anchorId,
@@ -2384,7 +2389,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetStorytellingResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {

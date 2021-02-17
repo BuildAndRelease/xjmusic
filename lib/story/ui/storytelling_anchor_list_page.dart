@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_anchor_category_list_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_storytelling_anchor_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
@@ -18,12 +18,11 @@ class StorytellingAnchorListPage extends StatefulWidget {
 
 class _StorytellingAnchorListPageState
     extends State<StorytellingAnchorListPage> {
-  int pageNum = 0;
+  int pageNum = 1;
   int pageSize = 50;
-  String categoryId = "10000000";
-
-  dynamic _categoryLisResponseModel;
-  dynamic _listResponseModel;
+  StorytellingAnchorCategory anchorCategory;
+  GetStorytellingAnchorCategoryResponseModel _categoryLisResponseModel;
+  GetStorytellingAnchorListResponseModel _listResponseModel;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -67,7 +66,7 @@ class _StorytellingAnchorListPageState
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("筛选条件:${categoryNameWithCategoryId(categoryId)}"),
+                Text("筛选条件:${anchorCategory?.title ?? ""}"),
                 IconButton(
                     icon: Icon(
                       Typicons.th_large_outline,
@@ -92,24 +91,19 @@ class _StorytellingAnchorListPageState
                   mainAxisSpacing: 5,
                   childAspectRatio: 3.2 / 4),
               itemBuilder: (context, index) {
-                final diss = _listResponseModel.listAtIndex(index);
+                final diss = _listResponseModel.categoryListAtIndex(index);
                 return GestureDetector(
                   onTap: () {
-                    // Routes.pushDissSongListPage(
-                    //     context,
-                    //     diss.dissId,
-                    //     diss.dissName,
-                    //     diss.introduction,
-                    //     utf8.decode(base64.decode(diss.imgUrl)));
+                    Routes.pushStoryTellingAnchorAlbumListPage(
+                        context, diss.uid);
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CachedNetworkImage(
-                          width: double.infinity,
-                          imageUrl: utf8.decode(base64.decode(diss.imgUrl))),
+                          width: double.infinity, imageUrl: diss.pic),
                       Text(
-                        diss.dissName,
+                        diss.nickname,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -117,7 +111,7 @@ class _StorytellingAnchorListPageState
                   ),
                 );
               },
-              itemCount: _listResponseModel?.listCount ?? 0,
+              itemCount: _listResponseModel?.categoryListCount ?? 0,
             ),
           )),
         ],
@@ -128,44 +122,77 @@ class _StorytellingAnchorListPageState
 
   Future _onRefresh() async {
     if (_categoryLisResponseModel != null) {
-      pageNum = 0;
-      HostApi.getStoryTellingAnchor(
-        categoryId,
-        "$pageNum",
-        "$pageSize",
-        onResponse: (response) {
-          _listResponseModel = response;
-          _refreshController.refreshCompleted();
-          if (mounted) setState(() {});
-        },
-        onError: (error) {
-          showToast(error.toString());
-          _refreshController.refreshFailed();
-        },
-      );
+      pageNum = 1;
+      if (anchorCategory.type == "normal") {
+        HostApi.getStoryTellingAnchorByNormal(
+          anchorCategory.name,
+          "hot",
+          "$pageSize",
+          "$pageNum",
+          onResponse: (response) {
+            _listResponseModel = response;
+            _refreshController.refreshCompleted();
+            if (mounted) setState(() {});
+          },
+          onError: (error) {
+            showToast(error.toString());
+            _refreshController.refreshFailed();
+          },
+        );
+      } else {
+        HostApi.getStoryTellingAnchor(
+          anchorCategory.id,
+          "$pageSize",
+          "$pageNum",
+          onResponse: (response) {
+            _listResponseModel = response;
+            _refreshController.refreshCompleted();
+            if (mounted) setState(() {});
+          },
+          onError: (error) {
+            showToast(error.toString());
+            _refreshController.refreshFailed();
+          },
+        );
+      }
     } else {
       HostApi.getStoryTellingAnchorCategory(
         onResponse: (response) {
           _categoryLisResponseModel = response;
-          categoryId = _categoryLisResponseModel
-              .categoriesAtIndex(0)
-              .itemsAtIndex(0)
-              .categoryId;
-          pageNum = 0;
-          HostApi.getStoryTellingAnchor(
-            categoryId,
-            "$pageNum",
-            "$pageSize",
-            onResponse: (response) {
-              _listResponseModel = response;
-              _refreshController.refreshCompleted();
-              if (mounted) setState(() {});
-            },
-            onError: (error) {
-              showToast(error.toString());
-              _refreshController.refreshFailed();
-            },
-          );
+          anchorCategory = _categoryLisResponseModel.categoryListAtIndex(0);
+          pageNum = 1;
+          if (anchorCategory.type == "normal") {
+            HostApi.getStoryTellingAnchorByNormal(
+              anchorCategory.name,
+              "hot",
+              "$pageSize",
+              "$pageNum",
+              onResponse: (response) {
+                _listResponseModel = response;
+                _refreshController.refreshCompleted();
+                if (mounted) setState(() {});
+              },
+              onError: (error) {
+                showToast(error.toString());
+                _refreshController.refreshFailed();
+              },
+            );
+          } else {
+            HostApi.getStoryTellingAnchor(
+              anchorCategory.id,
+              "$pageSize",
+              "$pageNum",
+              onResponse: (response) {
+                _listResponseModel = response;
+                _refreshController.refreshCompleted();
+                if (mounted) setState(() {});
+              },
+              onError: (error) {
+                showToast(error.toString());
+                _refreshController.refreshFailed();
+              },
+            );
+          }
         },
         onError: (error) {
           showToast("获取歌单分类失败");
@@ -176,65 +203,70 @@ class _StorytellingAnchorListPageState
   }
 
   Future _onLoadMore() async {
-    HostApi.getStoryTellingAnchor(
-      categoryId,
-      "${++pageNum}",
-      "$pageSize",
-      onResponse: (response) {
-        _listResponseModel.combineMoreData(response);
-        _refreshController.loadComplete();
-        if (mounted) setState(() {});
-      },
-      onError: (error) {
-        showToast(error.toString());
-        _refreshController.loadFailed();
-      },
-    );
-  }
-
-  String categoryNameWithCategoryId(String categoryId) {
-    for (var i = 0;
-        i < (_categoryLisResponseModel?.categoriesCount ?? 0);
-        i++) {
-      final categoryInfo = _categoryLisResponseModel.categoriesAtIndex(i);
-      for (var j = 0; j < categoryInfo.itemsCount; j++) {
-        final categoryItem = categoryInfo.itemsAtIndex(j);
-        if (categoryItem.categoryId == categoryId) {
-          return categoryItem.categoryName;
-        }
-      }
+    if (anchorCategory.type == "normal") {
+      HostApi.getStoryTellingAnchorByNormal(
+        anchorCategory.name,
+        "hot",
+        "$pageSize",
+        "${++pageNum}",
+        onResponse: (response) {
+          _listResponseModel.combineMoreData(response);
+          _refreshController.loadComplete();
+          if (mounted) setState(() {});
+        },
+        onError: (error) {
+          pageNum--;
+          showToast(error.toString());
+          _refreshController.loadFailed();
+        },
+      );
+    } else {
+      HostApi.getStoryTellingAnchor(
+        anchorCategory.id,
+        "$pageSize",
+        "${++pageNum}",
+        onResponse: (response) {
+          _listResponseModel.combineMoreData(response);
+          _refreshController.loadComplete();
+          if (mounted) setState(() {});
+        },
+        onError: (error) {
+          pageNum--;
+          showToast(error.toString());
+          _refreshController.loadFailed();
+        },
+      );
     }
-    return "未知歌单";
   }
 
   void _showScreeningDialog() async {
-    // String _tmpCategoryId = categoryId;
-    // final result = await showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         title: Text("歌单分类"),
-    //         content: SizedBox(
-    //           height: 400,
-    //           width: 300,
-    //           child: StorytellingAnchorScreenPage(
-    //               _categoryLisResponseModel, _tmpCategoryId, (categoryId) {
-    //             _tmpCategoryId = categoryId;
-    //           }),
-    //         ),
-    //         actions: [
-    //           TextButton(
-    //               onPressed: () {
-    //                 Navigator.of(context).pop(true);
-    //               },
-    //               child: Text("确认"))
-    //         ],
-    //       );
-    //     });
+    StorytellingAnchorCategory _tmpCategory = anchorCategory;
+    final result = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("歌单分类"),
+            content: SizedBox(
+              height: 400,
+              width: 300,
+              child: StorytellingAnchorScreenPage(
+                  _categoryLisResponseModel, _tmpCategory, (category) {
+                _tmpCategory = category;
+              }),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text("确认"))
+            ],
+          );
+        });
 
-    // if (result ?? false) {
-    //   categoryId = _tmpCategoryId;
-    //   _onRefresh();
-    // }
+    if (result ?? false) {
+      anchorCategory = _tmpCategory;
+      _onRefresh();
+    }
   }
 }
