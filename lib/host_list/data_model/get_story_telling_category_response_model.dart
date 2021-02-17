@@ -6,15 +6,15 @@ class GetStorytellingCategoryResponseModel extends BaseProtocol {
   String resultCode;
 
   GetStorytellingCategoryResponseModel(Map json) : super(json) {
-    if (json['categoryList'] != null) {
+    if (arg['categoryList'] != null) {
       categoryList = <Category>[];
-      json['categoryList'].forEach((v) {
+      arg['categoryList'].forEach((v) {
         categoryList.add(new Category.fromJson(v));
       });
     }
-    resultCode = json['resultCode'].toString();
+    resultCode = arg['resultCode'].toString();
   }
-  get categoryListCount => categoryList.length;
+  get categoryListCount => (categoryList?.length ?? 0);
   Category categoryListAtIndex(int index) {
     return categoryList[index];
   }

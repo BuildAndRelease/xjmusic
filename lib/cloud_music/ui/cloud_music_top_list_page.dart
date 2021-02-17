@@ -82,13 +82,6 @@ class _CloudMusicTopListPageState extends State<CloudMusicTopListPage> {
     );
   }
 
-  Widget _buildSectionHeader(String categoryName) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Text(categoryName),
-    );
-  }
-
   Widget _buildTopItem(Item item) {
     final songItem1 = item.songListCount > 0 ? item.songListAtIndex(0) : null;
     final songItem2 = item.songListCount > 1 ? item.songListAtIndex(1) : null;

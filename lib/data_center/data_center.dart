@@ -12,7 +12,6 @@ import 'package:xj_music/broadcast/playing_info_notify.dart';
 import 'package:xj_music/broadcast/search_host_notify.dart';
 import 'package:xj_music/broadcast/volume_notify.dart';
 import 'package:xj_music/data_center/socket.dart';
-import 'package:xj_music/host_list/data_model/get_playing_info_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_model.dart';
 import 'package:xj_music/util/shared_util.dart';
 

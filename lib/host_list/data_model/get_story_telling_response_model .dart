@@ -8,17 +8,21 @@ class GetStorytellingResponseModel extends BaseProtocol {
   String total;
 
   GetStorytellingResponseModel(Map json) : super(json) {
-    if (json['mediaList'] != null) {
+    if (arg['mediaList'] != null) {
       mediaList = <StoryTellingAlbumSet>[];
-      json['mediaList'].forEach((v) {
+      arg['mediaList'].forEach((v) {
         mediaList.add(new StoryTellingAlbumSet.fromJson(v));
       });
     }
-    resultCode = json['resultCode'].toString();
-    total = json['total'].toString();
+    resultCode = arg['resultCode'].toString();
+    total = arg['total'].toString();
   }
-  get mediaListCount => mediaList.length;
+  get mediaListCount => mediaList?.length ?? 0;
   StoryTellingAlbumSet mediaListAtIndex(int index) {
     return mediaList[index];
+  }
+
+  void combineMoreData(GetStorytellingResponseModel dataModel) {
+    mediaList.addAll(dataModel.mediaList);
   }
 }

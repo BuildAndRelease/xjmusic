@@ -9,7 +9,6 @@ import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_story_telling_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
-import 'package:xj_music/host_list/data_model/story_telling_response_model.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 
@@ -64,8 +63,8 @@ class _RoomMainStoryFragmentState extends State<RoomMainStoryFragment> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildMusicCategoryIconButton(
-                      Typicons.th_large_outline, "分类", () => print("object")),
+                  _buildMusicCategoryIconButton(Typicons.th_large_outline, "分类",
+                      () => Routes.pushStoryTellingCategoryListPage(context)),
                   _buildMusicCategoryIconButton(
                       FontAwesome.sellsy, "榜单", () => print("object")),
                   _buildMusicCategoryIconButton(
