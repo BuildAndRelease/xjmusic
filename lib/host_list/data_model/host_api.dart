@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'package:xj_music/data_center/data_center.dart';
 import 'package:xj_music/host_list/data_model/get_current_play_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_favorite_set_response_model.dart';
+import 'package:xj_music/host_list/data_model/get_netradio_toplist_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_storytelling_anchor_category_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/get_storytelling_rank_album_list_response_model.dart';
 import 'package:xj_music/host_list/data_model/party_stat_response_model.dart';
@@ -40,6 +41,7 @@ import 'get_diss_response_model.dart';
 import 'get_diss_song_response_model.dart';
 import 'get_download_path_list_response_model.dart';
 import 'get_local_directory_response_model.dart';
+import 'get_netradio_category_list_response_model.dart';
 import 'get_new_song_response_model.dart';
 import 'get_radio_response_model.dart';
 import 'get_radio_song_response_model.dart';
@@ -2535,7 +2537,7 @@ class HostApi {
 
   //5.4.1获取所有电台分类
   static getNetFmCategory(
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetNetFmCategoryListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {};
     await DataCenter.instance.sendMsgToDevice("GetNetFmCategory", arg,
@@ -2543,7 +2545,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetNetFmCategoryListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2577,7 +2579,7 @@ class HostApi {
 
   //5.4.3获取电台排行榜
   static getNetFmTopList(String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetNetFmTopListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"pageSize": pageSize, "pageNum": pageNum};
     await DataCenter.instance.sendMsgToDevice("GetNetFmTopList", arg,
@@ -2585,7 +2587,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetNetFmTopListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
