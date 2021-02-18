@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:fluttericon/typicons_icons.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_netradio_category_list_response_model.dart';
@@ -41,15 +38,20 @@ class _RoomMainNetRadioFragmentState extends State<RoomMainNetRadioFragment> {
     final List<Widget> categoryWidgets = [];
     for (var i = 0; i < (_categoryResponseModel?.categoryListCount ?? 0); i++) {
       final dataModel = _categoryResponseModel.categoryListAtIndex(i);
-      categoryWidgets.add(Container(
-          width: 70,
-          height: 35,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          alignment: Alignment.center,
-          child: Text(dataModel.name, textAlign: TextAlign.center)));
+      categoryWidgets.add(GestureDetector(
+        onTap: () {
+          Routes.pushNetRadioListPage(context, dataModel.id);
+        },
+        child: Container(
+            width: 70,
+            height: 35,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            alignment: Alignment.center,
+            child: Text(dataModel.name, textAlign: TextAlign.center)),
+      ));
     }
     final List<Widget> topWidgets = [];
     for (var i = 0;
@@ -80,11 +82,11 @@ class _RoomMainNetRadioFragmentState extends State<RoomMainNetRadioFragment> {
                   _buildMusicCategoryIconButton(Icons.location_on, "本地台",
                       () => Routes.pushTopListPage(context)),
                   _buildMusicCategoryIconButton(Icons.account_balance, "国家台",
-                      () => Routes.pushSingerListPage(context)),
+                      () => Routes.pushNetRadioCountryListPage(context)),
                   _buildMusicCategoryIconButton(FontAwesome5.building, "省市台",
                       () => Routes.pushDissListPage(context)),
                   _buildMusicCategoryIconButton(Icons.radio, "网络台",
-                      () => Routes.pushRadioListPage(context)),
+                      () => Routes.pushNetRadioNetFmListPage(context)),
                 ],
               ),
               sizeHeight8,
@@ -101,7 +103,7 @@ class _RoomMainNetRadioFragmentState extends State<RoomMainNetRadioFragment> {
               Divider(height: 0.5),
               sizeHeight8,
               GestureDetector(
-                onTap: () => Routes.pushCloudMusicNewSongPage(context),
+                onTap: () => Routes.pushNetRadioTopListPage(context),
                 child: Text("热门榜单 >"),
               ),
               ...topWidgets

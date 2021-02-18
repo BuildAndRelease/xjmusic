@@ -2556,7 +2556,7 @@ class HostApi {
 
   //5.4.2获取电台分类下的子电台分类
   static getNetFmByCategory(String categoryId, String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetNetFmTopListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {
       "categoryId": categoryId,
@@ -2568,7 +2568,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetNetFmTopListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2617,7 +2617,7 @@ class HostApi {
 
   //5.4.5获取国家台的电台列表
   static getNetFmNation(String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetNetFmTopListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"pageSize": pageSize, "pageNum": pageNum};
     await DataCenter.instance.sendMsgToDevice("GetNetFmNation", arg,
@@ -2625,7 +2625,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetNetFmTopListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {
@@ -2636,7 +2636,7 @@ class HostApi {
 
   //5.4.6获取网络台的电台列表
   static getNetFmNetwork(String pageSize, String pageNum,
-      {void Function(ResultCodeResponseModel response) onResponse,
+      {void Function(GetNetFmTopListResponseModel response) onResponse,
       void Function(Error error) onError}) async {
     final arg = {"pageSize": pageSize, "pageNum": pageNum};
     await DataCenter.instance.sendMsgToDevice("GetNetFmNetwork", arg,
@@ -2644,7 +2644,7 @@ class HostApi {
       try {
         final json = convert.jsonDecode(reponse);
         if (json != null && json is Map)
-          onResponse?.call(ResultCodeResponseModel(json));
+          onResponse?.call(GetNetFmTopListResponseModel(json));
         else
           onError?.call(StateError("json parse failed"));
       } catch (e) {

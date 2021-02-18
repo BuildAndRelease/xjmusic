@@ -8,14 +8,13 @@ import 'package:xj_music/main_page/room_mini_player_bar.dart';
 import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 
-class NetRadioListPage extends StatefulWidget {
-  final String categoryId;
-  const NetRadioListPage(this.categoryId);
+class NetRadioProvinceListPage extends StatefulWidget {
   @override
-  _NetRadioListPageState createState() => _NetRadioListPageState();
+  _NetRadioProvinceListPageState createState() =>
+      _NetRadioProvinceListPageState();
 }
 
-class _NetRadioListPageState extends State<NetRadioListPage> {
+class _NetRadioProvinceListPageState extends State<NetRadioProvinceListPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   GetNetFmTopListResponseModel _topListResponseModel;
@@ -130,8 +129,7 @@ class _NetRadioListPageState extends State<NetRadioListPage> {
 
   Future _onRefresh() async {
     pageNum = 1;
-    HostApi.getNetFmByCategory(
-      widget.categoryId,
+    HostApi.getNetFmNation(
       pageSize.toString(),
       pageNum.toString(),
       onResponse: (response) {
@@ -147,8 +145,7 @@ class _NetRadioListPageState extends State<NetRadioListPage> {
   }
 
   Future _onLoadMore() async {
-    HostApi.getNetFmByCategory(
-      widget.categoryId,
+    HostApi.getNetFmNation(
       pageSize.toString(),
       (++pageNum).toString(),
       onResponse: (response) {

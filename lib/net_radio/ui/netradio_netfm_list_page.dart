@@ -5,17 +5,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xj_music/host_list/data_model/get_netradio_toplist_response_model.dart';
 import 'package:xj_music/host_list/data_model/host_api.dart';
 import 'package:xj_music/main_page/room_mini_player_bar.dart';
-import 'package:xj_music/routes.dart';
 import 'package:xj_music/themes/const.dart';
 
-class NetRadioListPage extends StatefulWidget {
-  final String categoryId;
-  const NetRadioListPage(this.categoryId);
+import '../../routes.dart';
+
+class NetRadioNetFmListPage extends StatefulWidget {
   @override
-  _NetRadioListPageState createState() => _NetRadioListPageState();
+  _NetRadioNetFmListPageState createState() => _NetRadioNetFmListPageState();
 }
 
-class _NetRadioListPageState extends State<NetRadioListPage> {
+class _NetRadioNetFmListPageState extends State<NetRadioNetFmListPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   GetNetFmTopListResponseModel _topListResponseModel;
@@ -36,7 +35,7 @@ class _NetRadioListPageState extends State<NetRadioListPage> {
         centerTitle: true,
         backgroundColor: theme.primaryColor,
         title: Text(
-          '榜单',
+          '网络台',
           style: theme.textTheme.bodyText2.copyWith(color: Colors.white),
         ),
         leading: IconButton(
@@ -130,8 +129,7 @@ class _NetRadioListPageState extends State<NetRadioListPage> {
 
   Future _onRefresh() async {
     pageNum = 1;
-    HostApi.getNetFmByCategory(
-      widget.categoryId,
+    HostApi.getNetFmNetwork(
       pageSize.toString(),
       pageNum.toString(),
       onResponse: (response) {
@@ -147,8 +145,7 @@ class _NetRadioListPageState extends State<NetRadioListPage> {
   }
 
   Future _onLoadMore() async {
-    HostApi.getNetFmByCategory(
-      widget.categoryId,
+    HostApi.getNetFmNetwork(
       pageSize.toString(),
       (++pageNum).toString(),
       onResponse: (response) {

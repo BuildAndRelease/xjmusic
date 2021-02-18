@@ -9,8 +9,12 @@ class GetNetFmTopListResponseModel extends BaseProtocol {
   }
   get topListCateCount => topList?.length ?? 0;
 
-  NetFmTopInfo topListCateAtIndex(int index) {
+  NetFmTopInfo topListItemAtIndex(int index) {
     return NetFmTopInfo.fromJson(topList[index]);
+  }
+
+  void combineMoreData(GetNetFmTopListResponseModel model) {
+    topList.addAll(model.topList);
   }
 }
 

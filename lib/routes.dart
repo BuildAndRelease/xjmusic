@@ -12,6 +12,8 @@ import 'package:xj_music/local_media/ui/local_music_category_page.dart';
 import 'package:xj_music/main_page/room_main_page.dart';
 import 'package:xj_music/main_page/room_player_playlist_page.dart';
 import 'package:xj_music/net_radio/ui/netradio_list_page.dart';
+import 'package:xj_music/net_radio/ui/netradio_netfm_list_page.dart';
+import 'package:xj_music/net_radio/ui/netradio_provincefm_list_page.dart';
 import 'package:xj_music/story/ui/storytelling_anchor_album_page.dart';
 import 'package:xj_music/story/ui/storytelling_anchor_list_page.dart';
 import 'package:xj_music/story/ui/storytelling_category_album_page.dart';
@@ -30,6 +32,8 @@ import 'local_media/ui/local_music_favorite_playlist_manage_page.dart';
 import 'local_media/ui/local_music_recent_play_page.dart';
 import 'local_media/ui/local_music_subcategory_page.dart';
 import 'main_page/room_player_info_page.dart';
+import 'net_radio/ui/netradio_countryfm_list_page.dart';
+import 'net_radio/ui/netradio_toplist_page.dart';
 import 'splash_page.dart';
 import 'story/ui/storytelling_song_list_page.dart';
 import 'util/custom_route.dart';
@@ -229,6 +233,23 @@ class Routes {
 
   static Future pushNetRadioListPage(BuildContext context, String categoryId) {
     return push(context, NetRadioListPage(categoryId), "NetRadioListPage");
+  }
+
+  static Future pushNetRadioTopListPage(BuildContext context) {
+    return push(context, NetRadioTopListPage(), "NetRadioTopListPage");
+  }
+
+  static Future pushNetRadioNetFmListPage(BuildContext context) {
+    return push(context, NetRadioNetFmListPage(), "NetRadioNetFmListPage");
+  }
+
+  static Future pushNetRadioProvinceListPage(BuildContext context) {
+    return push(
+        context, NetRadioProvinceListPage(), "NetRadioProvinceListPage");
+  }
+
+  static Future pushNetRadioCountryListPage(BuildContext context) {
+    return push(context, NetRadioCountryListPage(), "NetRadioCountryListPage");
   }
 
   static void backHome() {
